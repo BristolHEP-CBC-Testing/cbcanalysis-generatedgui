@@ -15700,27 +15700,67 @@ $pyjs['loaded_modules']['OccupancyCheckPanel'] = function (__mod_name__) {
 
 
 	$m['VerticalPanel'] = $p['___import___']('pyjamas.ui.VerticalPanel.VerticalPanel', null, null, false);
+	$m['HorizontalPanel'] = $p['___import___']('pyjamas.ui.HorizontalPanel.HorizontalPanel', null, null, false);
 	$m['HTML'] = $p['___import___']('pyjamas.ui.HTML.HTML', null, null, false);
+	$m['Grid'] = $p['___import___']('pyjamas.ui.Grid.Grid', null, null, false);
+	$m['Button'] = $p['___import___']('pyjamas.ui.Button.Button', null, null, false);
 	$m['ErrorMessage'] = $p['___import___']('ErrorMessage.ErrorMessage', null, null, false);
-	$m['OccupancyCheckPanel'] = (function(){
+	$m['GlibRPCService'] = $p['___import___']('GlibRPCService.GlibRPCService', null, null, false);
+	$m['DataRunManager'] = $p['___import___']('DataRunManager.DataRunManager', null, null, false);
+	$m['OccupancyCheckView'] = (function(){
 		var $cls_definition = new Object();
 		var $method;
 		$cls_definition['__module__'] = 'OccupancyCheckPanel';
-		$method = $pyjs__bind_method2('__init__', function(rpcService) {
+		$method = $pyjs__bind_method2('__init__', function() {
 			if (this['__is_instance__'] === true) {
 				var self = this;
 			} else {
 				var self = arguments[0];
-				rpcService = arguments[1];
 			}
-
-			self['rpcService'] = rpcService;
+			var controlPanel;
 			self['mainPanel'] = $m['VerticalPanel']();
-			self['mainPanel']['add']($m['HTML']('Still need to add all of the interface elements for this.'));
+			self['echo'] = $m['HTML']('Initiating');
+			self['launchButton'] = $m['Button']('Update');
+			controlPanel = $m['HorizontalPanel']();
+			controlPanel['add']($p['getattr'](self, 'launchButton'));
+			controlPanel['add']($p['getattr'](self, 'echo'));
+			self['mainPanel']['add'](controlPanel);
+			self['resultGrids'] = $p['dict']([]);
+			self['resultLabels'] = $p['dict']([]);
 			return null;
 		}
-	, 1, [null,null,['self'],['rpcService']]);
+	, 1, [null,null,['self']]);
 		$cls_definition['__init__'] = $method;
+		$method = $pyjs__bind_method2('createResultGrid', function(gridName) {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+				gridName = arguments[1];
+			}
+			var $iter1_iter,$iter2_type,index,$iter2_iter,$$label,$iter1_array,$sub3,$sub2,$sub1,$sub4,$iter1_nextval,$iter2_idx,grid,$iter2_nextval,$iter1_type,$add2,$add3,$add1,$iter1_idx,$add4,$iter2_array;
+			$$label = $m['HTML']($p['__op_add']($add3=$p['__op_add']($add1='<br><b>',$add2=gridName),$add4='</b>'));
+			grid = $m['Grid'](17, 17);
+			$iter1_iter = $p['range'](1, grid['getColumnCount']());
+			$iter1_nextval=$p['__iter_prepare']($iter1_iter,false);
+			while (typeof($p['__wrapped_next']($iter1_nextval)['$nextval']) != 'undefined') {
+				index = $iter1_nextval['$nextval'];
+				grid['setWidget'](0, index, $m['HTML']($p['sprintf']('Cx%X', $p['__op_sub']($sub1=index,$sub2=1))));
+			}
+			$iter2_iter = $p['range'](1, grid['getRowCount']());
+			$iter2_nextval=$p['__iter_prepare']($iter2_iter,false);
+			while (typeof($p['__wrapped_next']($iter2_nextval)['$nextval']) != 'undefined') {
+				index = $iter2_nextval['$nextval'];
+				grid['setWidget'](index, 0, $m['HTML']($p['sprintf']('C%Xx', $p['__op_sub']($sub3=index,$sub4=1))));
+			}
+			self['mainPanel']['add']($$label);
+			self['mainPanel']['add'](grid);
+			$p['getattr'](self, 'resultLabels')['__setitem__'](gridName, $$label);
+			$p['getattr'](self, 'resultGrids')['__setitem__'](gridName, grid);
+			return null;
+		}
+	, 1, [null,null,['self'],['gridName']]);
+		$cls_definition['createResultGrid'] = $method;
 		$method = $pyjs__bind_method2('getPanel', function() {
 			if (this['__is_instance__'] === true) {
 				var self = this;
@@ -15729,6 +15769,317 @@ $pyjs['loaded_modules']['OccupancyCheckPanel'] = function (__mod_name__) {
 			}
 
 			return $p['getattr'](self, 'mainPanel');
+		}
+	, 1, [null,null,['self']]);
+		$cls_definition['getPanel'] = $method;
+		$method = $pyjs__bind_method2('getUpdateButton', function() {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+			}
+
+			return $p['getattr'](self, 'launchButton');
+		}
+	, 1, [null,null,['self']]);
+		$cls_definition['getUpdateButton'] = $method;
+		$method = $pyjs__bind_method2('enable', function() {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+			}
+
+			self['launchButton']['setEnabled'](true);
+			return null;
+		}
+	, 1, [null,null,['self']]);
+		$cls_definition['enable'] = $method;
+		$method = $pyjs__bind_method2('disable', function() {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+			}
+
+			self['launchButton']['setEnabled'](false);
+			return null;
+		}
+	, 1, [null,null,['self']]);
+		$cls_definition['disable'] = $method;
+		$method = $pyjs__bind_method2('clearResults', function() {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+			}
+			var $iter5_nextval,$iter3_idx,$iter5_idx,name,column,$iter4_nextval,$iter3_type,$iter5_array,$iter4_idx,$iter5_iter,grid,$iter3_iter,$iter4_type,$iter3_array,$iter4_array,$iter5_type,$iter4_iter,$iter3_nextval,row;
+			$iter3_iter = self['resultGrids']['keys']();
+			$iter3_nextval=$p['__iter_prepare']($iter3_iter,false);
+			while (typeof($p['__wrapped_next']($iter3_nextval)['$nextval']) != 'undefined') {
+				name = $iter3_nextval['$nextval'];
+				grid = $p['getattr'](self, 'resultGrids')['__getitem__'](name);
+				$iter4_iter = $p['range'](1, grid['getColumnCount']());
+				$iter4_nextval=$p['__iter_prepare']($iter4_iter,false);
+				while (typeof($p['__wrapped_next']($iter4_nextval)['$nextval']) != 'undefined') {
+					column = $iter4_nextval['$nextval'];
+					$iter5_iter = $p['range'](1, grid['getRowCount']());
+					$iter5_nextval=$p['__iter_prepare']($iter5_iter,false);
+					while (typeof($p['__wrapped_next']($iter5_nextval)['$nextval']) != 'undefined') {
+						row = $iter5_nextval['$nextval'];
+						grid['setWidget'](row, column, $m['HTML'](''));
+					}
+				}
+			}
+			return null;
+		}
+	, 1, [null,null,['self']]);
+		$cls_definition['clearResults'] = $method;
+		$method = $pyjs__bind_method2('addResult', function(cbcName, occupancies) {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+				cbcName = arguments[1];
+				occupancies = arguments[2];
+			}
+			var $iter6_type,$mod1,$mod2,$iter6_iter,$iter6_nextval,blue,index,$$label,$pyjs_try_err,red,green,row,$sub6,$sub5,$iter6_idx,$add14,$add15,$iter6_array,grid,$add11,$add12,$add13,$mul4,$mul3,$mul2,$mul1,column,$add16,$add6,$add7,$add5,$add10,$add8,$add9;
+			if ($p['bool']($p['op_eq'](occupancies, null))) {
+				return self['addError'](cbcName);
+			}
+			try {
+				grid = $p['getattr'](self, 'resultGrids')['__getitem__'](cbcName);
+			} catch($pyjs_try_err) {
+				var $pyjs_try_err_name = (typeof $pyjs_try_err['__name__'] == 'undefined' ? $pyjs_try_err['name'] : $pyjs_try_err['__name__'] );
+				$pyjs['__last_exception__'] = {'error': $pyjs_try_err, 'module': $m};
+				if (($pyjs_try_err_name == $p['NameError']['__name__'])||$p['_isinstance']($pyjs_try_err,$p['NameError'])) {
+					self['createResultGrid'](cbcName);
+					grid = $p['getattr'](self, 'resultGrids')['__getitem__'](cbcName);
+				} else { $pyjs['__active_exception_stack__'] = $pyjs['__last_exception_stack__']; $pyjs['__last_exception_stack__'] = null; throw $pyjs_try_err; }
+			}
+			$$label = $p['getattr'](self, 'resultLabels')['__getitem__'](cbcName);
+			$$label['setHTML']($p['__op_add']($add7=$p['__op_add']($add5='<br><b>',$add6=cbcName),$add8='</b>'));
+			row = 1;
+			column = 1;
+			$iter6_iter = $p['range'](0, $p['len'](occupancies));
+			$iter6_nextval=$p['__iter_prepare']($iter6_iter,false);
+			while (typeof($p['__wrapped_next']($iter6_nextval)['$nextval']) != 'undefined') {
+				index = $iter6_nextval['$nextval'];
+				red = (typeof ($mul1=255.0)==typeof ($mul2=$p['__op_sub']($sub5=1.0,$sub6=occupancies['__getitem__'](index))) && typeof $mul1=='number'?
+					$mul1*$mul2:
+					$p['op_mul']($mul1,$mul2));
+				green = (typeof ($mul3=255.0)==typeof ($mul4=occupancies['__getitem__'](index)) && typeof $mul3=='number'?
+					$mul3*$mul4:
+					$p['op_mul']($mul3,$mul4));
+				blue = 0;
+				grid['setWidget'](row, column, $m['HTML']($p['__op_add']($add11=$p['__op_add']($add9=$p['sprintf']('<div style="background-color:#%02X%02X%02X', $p['tuple']([red, green, blue])),$add10=$p['sprintf']('">%1.2f', occupancies['__getitem__'](index))),$add12='</div>')));
+				column = $p['__op_add']($add13=column,$add14=1);
+				if ($p['bool']($p['op_eq']((typeof ($mod1=column)==typeof ($mod2=17) && typeof $mod1=='number'?
+					(($mod1=$mod1%$mod2)<0&&$mod2>0?$mod1+$mod2:$mod1):
+					$p['op_mod']($mod1,$mod2)), 0))) {
+					column = 1;
+					row = $p['__op_add']($add15=row,$add16=1);
+				}
+			}
+			return null;
+		}
+	, 1, [null,null,['self'],['cbcName'],['occupancies']]);
+		$cls_definition['addResult'] = $method;
+		$method = $pyjs__bind_method2('addError', function(cbcName) {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+				cbcName = arguments[1];
+			}
+			var $add20,$$label,$pyjs_try_err,$add18,$add19,$add17;
+			try {
+				$$label = $p['getattr'](self, 'resultLabels')['__getitem__'](cbcName);
+			} catch($pyjs_try_err) {
+				var $pyjs_try_err_name = (typeof $pyjs_try_err['__name__'] == 'undefined' ? $pyjs_try_err['name'] : $pyjs_try_err['__name__'] );
+				$pyjs['__last_exception__'] = {'error': $pyjs_try_err, 'module': $m};
+				if (($pyjs_try_err_name == $p['NameError']['__name__'])||$p['_isinstance']($pyjs_try_err,$p['NameError'])) {
+					self['createResultGrid'](cbcName);
+					$$label = $p['getattr'](self, 'resultLabels')['__getitem__'](cbcName);
+				} else { $pyjs['__active_exception_stack__'] = $pyjs['__last_exception_stack__']; $pyjs['__last_exception_stack__'] = null; throw $pyjs_try_err; }
+			}
+			$$label['setHTML']($p['__op_add']($add19=$p['__op_add']($add17='<br>Unable to get the results for <b>',$add18=cbcName),$add20='</b>'));
+			return null;
+		}
+	, 1, [null,null,['self'],['cbcName']]);
+		$cls_definition['addError'] = $method;
+		$method = $pyjs__bind_method2('setEchoMessage', function(message) {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+				message = arguments[1];
+			}
+
+			self['echo']['setText'](message);
+			return null;
+		}
+	, 1, [null,null,['self'],['message']]);
+		$cls_definition['setEchoMessage'] = $method;
+		var $bases = new Array(pyjslib['object']);
+		var $data = $p['dict']();
+		for (var $item in $cls_definition) { $data['__setitem__']($item, $cls_definition[$item]); }
+		return $p['_create_class']('OccupancyCheckView', $p['tuple']($bases), $data);
+	})();
+	$m['OccupancyCheckPanel'] = (function(){
+		var $cls_definition = new Object();
+		var $method;
+		$cls_definition['__module__'] = 'OccupancyCheckPanel';
+		$method = $pyjs__bind_method2('__init__', function() {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+			}
+
+			self['rpcService'] = $m['GlibRPCService']['instance']();
+			self['dataRunManager'] = $m['DataRunManager']['instance']();
+			self['view'] = $m['OccupancyCheckView']();
+			self['rpcService']['connectedCBCNames'](null, self);
+			self['dataRunManager']['registerEventHandler'](self);
+			self['view']['getUpdateButton']()['addClickListener'](self);
+			self['view']['setEchoMessage']('No data.');
+			return null;
+		}
+	, 1, [null,null,['self']]);
+		$cls_definition['__init__'] = $method;
+		$method = $pyjs__bind_method2('onClick', function(sender) {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+				sender = arguments[1];
+			}
+
+			if ($p['bool']($p['op_eq'](sender, self['view']['getUpdateButton']()))) {
+				self['view']['setEchoMessage']('Starting data run');
+				self['dataRunManager']['startOccupancyCheck']();
+			}
+			return null;
+		}
+	, 1, [null,null,['self'],['sender']]);
+		$cls_definition['onClick'] = $method;
+		$method = $pyjs__bind_method2('onDataTakingEvent', function(eventCode, details) {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+				eventCode = arguments[1];
+				details = arguments[2];
+			}
+
+			if ($p['bool']($p['op_eq'](eventCode, $p['getattr']($m['DataRunManager'], 'DataTakingStartedEvent')))) {
+				self['view']['setEchoMessage']('Taking data... ');
+				self['view']['disable']();
+			}
+			else if ($p['bool']($p['op_eq'](eventCode, $p['getattr']($m['DataRunManager'], 'DataTakingFinishedEvent')))) {
+				self['view']['setEchoMessage']('Data taking finished');
+				self['update']();
+				self['view']['enable']();
+			}
+			return null;
+		}
+	, 1, [null,null,['self'],['eventCode'],['details']]);
+		$cls_definition['onDataTakingEvent'] = $method;
+		$method = $pyjs__bind_method2('onRemoteResponse', function(response, request_info) {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+				response = arguments[1];
+				request_info = arguments[2];
+			}
+			var $add21,$add22;
+			if ($p['bool']($p['op_eq']($p['getattr'](request_info, 'method'), 'getOccupancies'))) {
+				self['_onGetOccupanciesResponse'](response);
+			}
+			else if ($p['bool']($p['op_eq']($p['getattr'](request_info, 'method'), 'connectedCBCNames'))) {
+				self['_onConnectedCBCNamesResponse'](response);
+			}
+			else {
+				$m['ErrorMessage']($p['__op_add']($add21='Received an unexpected response for method ',$add22=$p['getattr'](request_info, 'method')));
+			}
+			return null;
+		}
+	, 1, [null,null,['self'],['response'],['request_info']]);
+		$cls_definition['onRemoteResponse'] = $method;
+		$method = $pyjs__bind_method2('onRemoteError', function(code, message, request_info) {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+				code = arguments[1];
+				message = arguments[2];
+				request_info = arguments[3];
+			}
+			var $add24,$add23;
+			$m['ErrorMessage']($p['__op_add']($add23='Unable to contact server: ',$add24=$p['str'](message)));
+			return null;
+		}
+	, 1, [null,null,['self'],['code'],['message'],['request_info']]);
+		$cls_definition['onRemoteError'] = $method;
+		$method = $pyjs__bind_method2('_onGetOccupanciesResponse', function(response) {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+				response = arguments[1];
+			}
+			var $iter7_nextval,$iter7_iter,$iter7_array,cbcName,$iter7_idx,$iter7_type;
+			self['view']['clearResults']();
+			$iter7_iter = response['keys']();
+			$iter7_nextval=$p['__iter_prepare']($iter7_iter,false);
+			while (typeof($p['__wrapped_next']($iter7_nextval)['$nextval']) != 'undefined') {
+				cbcName = $iter7_nextval['$nextval'];
+				self['view']['addResult'](cbcName, response['__getitem__'](cbcName));
+			}
+			return null;
+		}
+	, 1, [null,null,['self'],['response']]);
+		$cls_definition['_onGetOccupanciesResponse'] = $method;
+		$method = $pyjs__bind_method2('_onConnectedCBCNamesResponse', function(response) {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+				response = arguments[1];
+			}
+			var $iter8_idx,name,$iter8_array,$iter8_iter,$iter8_nextval,$iter8_type;
+			$iter8_iter = response;
+			$iter8_nextval=$p['__iter_prepare']($iter8_iter,false);
+			while (typeof($p['__wrapped_next']($iter8_nextval)['$nextval']) != 'undefined') {
+				name = $iter8_nextval['$nextval'];
+				self['view']['createResultGrid'](name);
+			}
+			return null;
+		}
+	, 1, [null,null,['self'],['response']]);
+		$cls_definition['_onConnectedCBCNamesResponse'] = $method;
+		$method = $pyjs__bind_method2('update', function() {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+			}
+
+			self['rpcService']['getOccupancies'](null, self);
+			return null;
+		}
+	, 1, [null,null,['self']]);
+		$cls_definition['update'] = $method;
+		$method = $pyjs__bind_method2('getPanel', function() {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+			}
+
+			return self['view']['getPanel']();
 		}
 	, 1, [null,null,['self']]);
 		$cls_definition['getPanel'] = $method;
@@ -15745,7 +16096,7 @@ $pyjs['loaded_modules']['OccupancyCheckPanel'] = function (__mod_name__) {
 
 
 /*
-PYJS_DEPS: ['pyjamas.ui.VerticalPanel.VerticalPanel', 'pyjamas', 'pyjamas.ui', 'pyjamas.ui.VerticalPanel', 'pyjamas.ui.HTML.HTML', 'pyjamas.ui.HTML', 'ErrorMessage.ErrorMessage', 'ErrorMessage']
+PYJS_DEPS: ['pyjamas.ui.VerticalPanel.VerticalPanel', 'pyjamas', 'pyjamas.ui', 'pyjamas.ui.VerticalPanel', 'pyjamas.ui.HorizontalPanel.HorizontalPanel', 'pyjamas.ui.HorizontalPanel', 'pyjamas.ui.HTML.HTML', 'pyjamas.ui.HTML', 'pyjamas.ui.Grid.Grid', 'pyjamas.ui.Grid', 'pyjamas.ui.Button.Button', 'pyjamas.ui.Button', 'ErrorMessage.ErrorMessage', 'ErrorMessage', 'GlibRPCService.GlibRPCService', 'GlibRPCService', 'DataRunManager.DataRunManager', 'DataRunManager']
 */
 
 --></script>
@@ -18279,6 +18630,314 @@ $pyjs['loaded_modules']['pyjamas.ui.Event'] = function (__mod_name__) {
 /* end module: pyjamas.ui.Event */
 
 
+
+--></script>
+<script type="text/javascript"><!--
+/* start module: pyjamas.ui.Grid */
+$pyjs['loaded_modules']['pyjamas.ui.Grid'] = function (__mod_name__) {
+	if($pyjs['loaded_modules']['pyjamas.ui.Grid']['__was_initialized__']) return $pyjs['loaded_modules']['pyjamas.ui.Grid'];
+	if(typeof $pyjs['loaded_modules']['pyjamas.ui'] == 'undefined' || !$pyjs['loaded_modules']['pyjamas.ui']['__was_initialized__']) $p['___import___']('pyjamas.ui', null);
+	var $m = $pyjs['loaded_modules']['pyjamas.ui.Grid'];
+	$m['__repr__'] = function() { return '<module: pyjamas.ui.Grid>'; };
+	$m['__was_initialized__'] = true;
+	if ((__mod_name__ === null) || (typeof __mod_name__ == 'undefined')) __mod_name__ = 'pyjamas.ui.Grid';
+	$m['__name__'] = __mod_name__;
+	$pyjs['loaded_modules']['pyjamas.ui']['Grid'] = $pyjs['loaded_modules']['pyjamas.ui.Grid'];
+
+
+	$m['DOM'] = $p['___import___']('pyjamas.DOM', 'pyjamas.ui', null, false);
+	$m['Factory'] = $p['___import___']('pyjamas.Factory', 'pyjamas.ui', null, false);
+	$m['HTMLTable'] = $p['___import___']('pyjamas.ui.HTMLTable.HTMLTable', 'pyjamas.ui', null, false);
+	$m['CellFormatter'] = $p['___import___']('pyjamas.ui.CellFormatter.CellFormatter', 'pyjamas.ui', null, false);
+	$m['RowFormatter'] = $p['___import___']('pyjamas.ui.RowFormatter.RowFormatter', 'pyjamas.ui', null, false);
+	$m['Grid'] = (function(){
+		var $cls_definition = new Object();
+		var $method;
+		$cls_definition['__module__'] = 'pyjamas.ui.Grid';
+		$method = $pyjs__bind_method2('__init__', function(rows, columns) {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+				var kwargs = arguments['length'] >= 3 ? arguments[arguments['length']-1] : arguments[arguments['length']];
+				if (kwargs === null || typeof kwargs != 'object' || kwargs['__name__'] != 'dict' || typeof kwargs['$pyjs_is_kwarg'] == 'undefined') {
+					var kwargs = arguments[arguments['length']+1];
+				} else {
+					delete kwargs['$pyjs_is_kwarg'];
+				}
+			} else {
+				var self = arguments[0];
+				rows = arguments[1];
+				columns = arguments[2];
+				var kwargs = arguments['length'] >= 4 ? arguments[arguments['length']-1] : arguments[arguments['length']];
+				if (kwargs === null || typeof kwargs != 'object' || kwargs['__name__'] != 'dict' || typeof kwargs['$pyjs_is_kwarg'] == 'undefined') {
+					kwargs = arguments[arguments['length']+1];
+				} else {
+					delete kwargs['$pyjs_is_kwarg'];
+				}
+			}
+			if (typeof kwargs == 'undefined') {
+				kwargs = $p['__empty_dict']();
+				if (typeof columns != 'undefined') {
+					if (columns !== null && typeof columns['$pyjs_is_kwarg'] != 'undefined') {
+						kwargs = columns;
+						columns = arguments[3];
+					}
+				} else 				if (typeof rows != 'undefined') {
+					if (rows !== null && typeof rows['$pyjs_is_kwarg'] != 'undefined') {
+						kwargs = rows;
+						rows = arguments[3];
+					}
+				} else 				if (typeof self != 'undefined') {
+					if (self !== null && typeof self['$pyjs_is_kwarg'] != 'undefined') {
+						kwargs = self;
+						self = arguments[3];
+					}
+				} else {
+				}
+			}
+			if (typeof rows == 'undefined') rows=arguments['callee']['__args__'][3][1];
+			if (typeof columns == 'undefined') columns=arguments['callee']['__args__'][4][1];
+			var $or1,$or2;
+			self['numColumns'] = 0;
+			self['numRows'] = 0;
+			$pyjs_kwargs_call($m['HTMLTable'], '__init__', null, kwargs, [{}, self]);
+			if ($p['bool'](($p['bool']($or1=($p['cmp'](rows, 0) == 1))?$or1:($p['cmp'](columns, 0) == 1)))) {
+				self['resize'](rows, columns);
+			}
+			return null;
+		}
+	, 1, [null,['kwargs'],['self'],['rows', 0],['columns', 0]]);
+		$cls_definition['__init__'] = $method;
+		$method = $pyjs__bind_method2('removeRow', function(row) {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+				row = arguments[1];
+			}
+			var $sub2,$sub1;
+			$m['HTMLTable']['removeRow'](self, row);
+			self['numRows'] = $p['__op_sub']($sub1=$p['getattr'](self, 'numRows'),$sub2=1);
+			return null;
+		}
+	, 1, [null,null,['self'],['row']]);
+		$cls_definition['removeRow'] = $method;
+		$method = $pyjs__bind_method2('resize', function(rows, columns) {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+				rows = arguments[1];
+				columns = arguments[2];
+			}
+
+			self['resizeColumns'](columns);
+			self['resizeRows'](rows);
+			return null;
+		}
+	, 1, [null,null,['self'],['rows'],['columns']]);
+		$cls_definition['resize'] = $method;
+		$method = $pyjs__bind_method2('resizeColumns', function(columns) {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+				columns = arguments[1];
+			}
+			var $iter3_type,$iter1_iter,$iter4_type,$iter2_type,$iter4_iter,$iter3_idx,$iter2_iter,$iter3_iter,$sub3,$sub6,$sub5,$iter1_array,$iter1_nextval,$iter2_idx,$iter3_array,$iter2_nextval,$iter1_type,$iter1_idx,i,$iter4_nextval,j,$iter4_idx,$iter4_array,$sub4,$iter3_nextval,$iter2_array;
+			if ($p['bool']($p['op_eq']($p['getattr'](self, 'numColumns'), columns))) {
+				return null;
+			}
+			if ($p['bool'](($p['cmp']($p['getattr'](self, 'numColumns'), columns) == 1))) {
+				$iter1_iter = $p['range'](0, $p['getattr'](self, 'numRows'));
+				$iter1_nextval=$p['__iter_prepare']($iter1_iter,false);
+				while (typeof($p['__wrapped_next']($iter1_nextval)['$nextval']) != 'undefined') {
+					i = $iter1_nextval['$nextval'];
+					$iter2_iter = $p['range']($p['__op_sub']($sub3=$p['getattr'](self, 'numColumns'),$sub4=1), $p['__op_sub']($sub5=columns,$sub6=1), (typeof ($usub1=1)=='number'?
+						-$usub1:
+						$p['op_usub']($usub1)));
+					$iter2_nextval=$p['__iter_prepare']($iter2_iter,false);
+					while (typeof($p['__wrapped_next']($iter2_nextval)['$nextval']) != 'undefined') {
+						j = $iter2_nextval['$nextval'];
+						self['removeCell'](i, j);
+					}
+				}
+			}
+			else {
+				$iter3_iter = $p['range']($p['getattr'](self, 'numRows'));
+				$iter3_nextval=$p['__iter_prepare']($iter3_iter,false);
+				while (typeof($p['__wrapped_next']($iter3_nextval)['$nextval']) != 'undefined') {
+					i = $iter3_nextval['$nextval'];
+					$iter4_iter = $p['range']($p['getattr'](self, 'numColumns'), columns);
+					$iter4_nextval=$p['__iter_prepare']($iter4_iter,false);
+					while (typeof($p['__wrapped_next']($iter4_nextval)['$nextval']) != 'undefined') {
+						j = $iter4_nextval['$nextval'];
+						self['insertCell'](i, j);
+					}
+				}
+			}
+			self['numColumns'] = columns;
+			return null;
+		}
+	, 1, [null,null,['self'],['columns']]);
+		$cls_definition['resizeColumns'] = $method;
+		$method = $pyjs__bind_method2('resizeRows', function(rows) {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+				rows = arguments[1];
+			}
+			var $sub10,$sub9,$sub8,$sub7;
+			if ($p['bool']($p['op_eq']($p['getattr'](self, 'numRows'), rows))) {
+				return null;
+			}
+			if ($p['bool'](($p['cmp']($p['getattr'](self, 'numRows'), rows) == -1))) {
+				self['addRows'](self['getBodyElement'](), $p['__op_sub']($sub7=rows,$sub8=$p['getattr'](self, 'numRows')), $p['getattr'](self, 'numColumns'));
+				self['numRows'] = rows;
+			}
+			else {
+				while ($p['bool'](($p['cmp']($p['getattr'](self, 'numRows'), rows) == 1))) {
+					self['removeRow']($p['__op_sub']($sub9=$p['getattr'](self, 'numRows'),$sub10=1));
+				}
+			}
+			return null;
+		}
+	, 1, [null,null,['self'],['rows']]);
+		$cls_definition['resizeRows'] = $method;
+		$method = $pyjs__bind_method2('createCell', function() {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+			}
+			var td;
+			td = $m['HTMLTable']['createCell'](self);
+			$m['DOM']['setInnerHTML'](td, '&nbsp;');
+			return td;
+		}
+	, 1, [null,null,['self']]);
+		$cls_definition['createCell'] = $method;
+		$method = $pyjs__bind_method2('clearCell', function(row, column) {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+				row = arguments[1];
+				column = arguments[2];
+			}
+			var b,td;
+			td = self['cellFormatter']['getElement'](row, column);
+			b = $m['HTMLTable']['internalClearCell'](self, td);
+			$m['DOM']['setInnerHTML'](td, '&nbsp;');
+			return b;
+		}
+	, 1, [null,null,['self'],['row'],['column']]);
+		$cls_definition['clearCell'] = $method;
+		$method = $pyjs__bind_method2('prepareCell', function(row, column) {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+				row = arguments[1];
+				column = arguments[2];
+			}
+
+ 			return null;
+		}
+	, 1, [null,null,['self'],['row'],['column']]);
+		$cls_definition['prepareCell'] = $method;
+		$method = $pyjs__bind_method2('prepareRow', function(row) {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+				row = arguments[1];
+			}
+
+ 			return null;
+		}
+	, 1, [null,null,['self'],['row']]);
+		$cls_definition['prepareRow'] = $method;
+		$method = $pyjs__bind_method2('getCellCount', function(row) {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+				row = arguments[1];
+			}
+
+			return $p['getattr'](self, 'numColumns');
+		}
+	, 1, [null,null,['self'],['row']]);
+		$cls_definition['getCellCount'] = $method;
+		$method = $pyjs__bind_method2('getColumnCount', function() {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+			}
+
+			return $p['getattr'](self, 'numColumns');
+		}
+	, 1, [null,null,['self']]);
+		$cls_definition['getColumnCount'] = $method;
+		$method = $pyjs__bind_method2('getRowCount', function() {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+			}
+
+			return $p['getattr'](self, 'numRows');
+		}
+	, 1, [null,null,['self']]);
+		$cls_definition['getRowCount'] = $method;
+		$method = $pyjs__bind_method2('addRows', function(table, numRows, columns) {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+				table = arguments[1];
+				numRows = arguments[2];
+				columns = arguments[3];
+			}
+			var $iter5_nextval,cell,cellNum,$iter5_idx,$iter6_idx,$iter6_type,$iter5_array,rowNum,$iter6_array,$iter5_iter,$iter5_type,td,$iter6_nextval,$iter6_iter,row;
+			td = $m['DOM']['createElement']('td');
+			$m['DOM']['setInnerHTML'](td, '&nbsp;');
+			row = $m['DOM']['createElement']('tr');
+			$iter5_iter = $p['range'](columns);
+			$iter5_nextval=$p['__iter_prepare']($iter5_iter,false);
+			while (typeof($p['__wrapped_next']($iter5_nextval)['$nextval']) != 'undefined') {
+				cellNum = $iter5_nextval['$nextval'];
+				cell = td['cloneNode'](true);
+				row['appendChild'](cell);
+			}
+			$iter6_iter = $p['range'](numRows);
+			$iter6_nextval=$p['__iter_prepare']($iter6_iter,false);
+			while (typeof($p['__wrapped_next']($iter6_nextval)['$nextval']) != 'undefined') {
+				rowNum = $iter6_nextval['$nextval'];
+				table['appendChild'](row['cloneNode'](true));
+			}
+			return null;
+		}
+	, 1, [null,null,['self'],['table'],['numRows'],['columns']]);
+		$cls_definition['addRows'] = $method;
+		var $bases = new Array($m['HTMLTable']);
+		var $data = $p['dict']();
+		for (var $item in $cls_definition) { $data['__setitem__']($item, $cls_definition[$item]); }
+		return $p['_create_class']('Grid', $p['tuple']($bases), $data);
+	})();
+	$m['Factory']['registerClass']('pyjamas.ui.Grid', 'Grid', $m['Grid']);
+	return this;
+}; /* end pyjamas.ui.Grid */
+
+
+/* end module: pyjamas.ui.Grid */
+
+
+/*
+PYJS_DEPS: ['pyjamas.DOM', 'pyjamas', 'pyjamas.Factory', 'pyjamas.ui.HTMLTable.HTMLTable', 'pyjamas.ui', 'pyjamas.ui.HTMLTable', 'pyjamas.ui.CellFormatter.CellFormatter', 'pyjamas.ui.CellFormatter', 'pyjamas.ui.RowFormatter.RowFormatter', 'pyjamas.ui.RowFormatter']
+*/
 
 --></script>
 <script type="text/javascript"><!--
@@ -20905,9 +21564,11 @@ $pyjs['loaded_modules']['index'] = function (__mod_name__) {
 	$m['JSONProxy'] = $p['___import___']('pyjamas.JSONService.JSONProxy', null, null, false);
 	$m['StyleSheetCssFile'] = $p['___import___']('pyjamas.ui.CSS.StyleSheetCssFile', null, null, false);
 	$m['DialogBox'] = $p['___import___']('pyjamas.ui.DialogBox.DialogBox', null, null, false);
+	$m['HasHorizontalAlignment'] = $p['___import___']('pyjamas.ui.HasHorizontalAlignment', null, null, false);
 	$m['I2CPanel'] = $p['___import___']('I2CPanel.I2CPanel', null, null, false);
 	$m['OccupancyCheckPanel'] = $p['___import___']('OccupancyCheckPanel.OccupancyCheckPanel', null, null, false);
 	$m['SCurveRunPanel'] = $p['___import___']('SCurveRunPanel.SCurveRunPanel', null, null, false);
+	$m['DataRunManager'] = $p['___import___']('DataRunManager.DataRunManager', null, null, false);
 	$m['ErrorMessage'] = $p['___import___']('ErrorMessage.ErrorMessage', null, null, false);
 	$m['Client'] = (function(){
 		var $cls_definition = new Object();
@@ -20919,18 +21580,32 @@ $pyjs['loaded_modules']['index'] = function (__mod_name__) {
 			} else {
 				var self = arguments[0];
 			}
-			var selectionPanel;
+			var selectionPanel,titleBar;
 			$m['StyleSheetCssFile']('styleSheet.css');
 			self['TEXT_WAITING'] = 'Waiting for response...';
 			self['TEXT_ERROR'] = 'Server Error';
 			self['status'] = $m['Label']();
-			self['remote_server'] = (typeof GlibControlService == "undefined"?$m['GlibControlService']:GlibControlService)();
-			self['I2CPanel'] = $m['I2CPanel']($p['getattr'](self, 'remote_server'));
-			self['SCurveRunPanel'] = $m['SCurveRunPanel']($p['getattr'](self, 'remote_server'));
-			self['OccupancyCheckPanel'] = $m['OccupancyCheckPanel']($p['getattr'](self, 'remote_server'));
+			self['I2CPanel'] = $m['I2CPanel']();
+			self['SCurveRunPanel'] = $m['SCurveRunPanel']();
+			self['OccupancyCheckPanel'] = $m['OccupancyCheckPanel']();
 			self['mainPanel'] = $m['DockPanel']();
-			self['mainPanel']['add']($pyjs_kwargs_call(null, $m['HTML'], null, null, [{'StyleName':'titleStyle'}, 'CBC Test Stand (v1.1)']), $p['getattr']($m['DockPanel'], 'NORTH'));
+			titleBar = $m['HorizontalPanel']();
+			titleBar['add']($pyjs_kwargs_call(null, $m['HTML'], null, null, [{'StyleName':'titleStyle'}, 'CBC Test Stand (v1.1)']));
+			self['stopTakingDataButton'] = $m['Button']('Stop taking data');
+			self['stopTakingDataButton']['addClickListener'](self);
+			self['dataTakingPercentage'] = $m['HTML']('0%');
+			self['dataTakingStatus'] = $m['HTML']('Initiating...');
+			titleBar['add']($p['getattr'](self, 'dataTakingPercentage'));
+			titleBar['add']($p['getattr'](self, 'dataTakingStatus'));
+			titleBar['add']($p['getattr'](self, 'stopTakingDataButton'));
+			titleBar['setCellHorizontalAlignment']($p['getattr'](self, 'dataTakingStatus'), $p['getattr']($m['HasHorizontalAlignment'], 'ALIGN_RIGHT'));
+			titleBar['setCellHorizontalAlignment']($p['getattr'](self, 'dataTakingPercentage'), $p['getattr']($m['HasHorizontalAlignment'], 'ALIGN_RIGHT'));
+			titleBar['setCellHorizontalAlignment']($p['getattr'](self, 'stopTakingDataButton'), $p['getattr']($m['HasHorizontalAlignment'], 'ALIGN_RIGHT'));
+			titleBar['setWidth']('100%');
+			self['mainPanel']['add'](titleBar, $p['getattr']($m['DockPanel'], 'NORTH'));
 			selectionPanel = $m['VerticalPanel']();
+			self['dataRunManager'] = $m['DataRunManager']['instance']();
+			self['dataRunManager']['registerEventHandler'](self);
 			self['activePanelButton'] = null;
 			self['activePanel'] = null;
 			self['registersButton'] = $pyjs_kwargs_call(null, $m['Label'], null, null, [{'StyleName':'areaStyle'}, 'I2C Registers']);
@@ -20950,6 +21625,36 @@ $pyjs['loaded_modules']['index'] = function (__mod_name__) {
 		}
 	, 1, [null,null,['self']]);
 		$cls_definition['onModuleLoad'] = $method;
+		$method = $pyjs__bind_method2('onDataTakingEvent', function(eventCode, details) {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+				eventCode = arguments[1];
+				details = arguments[2];
+			}
+			var $add2,$add1,$mul2,$mul1;
+			if ($p['bool']($p['op_eq'](eventCode, $p['getattr']($m['DataRunManager'], 'DataTakingStartedEvent')))) {
+				self['stopTakingDataButton']['setEnabled'](true);
+				self['dataTakingPercentage']['setText']('0%');
+				self['dataTakingStatus']['setText']('Starting run...');
+			}
+			else if ($p['bool']($p['op_eq'](eventCode, $p['getattr']($m['DataRunManager'], 'DataTakingFinishedEvent')))) {
+				self['stopTakingDataButton']['setEnabled'](false);
+				self['dataTakingPercentage']['setText']('');
+				self['dataTakingStatus']['setText']('Not taking data');
+			}
+			else if ($p['bool']($p['op_eq'](eventCode, $p['getattr']($m['DataRunManager'], 'DataTakingStatusEvent')))) {
+				self['stopTakingDataButton']['setEnabled'](true);
+				self['dataTakingPercentage']['setText']($p['sprintf']('%3d%%', $p['float_int']($p['__op_add']($add1=(typeof ($mul1=details['__getitem__']('fractionComplete'))==typeof ($mul2=100) && typeof $mul1=='number'?
+					$mul1*$mul2:
+					$p['op_mul']($mul1,$mul2)),$add2=0.5))));
+				self['dataTakingStatus']['setText'](details['__getitem__']('statusString'));
+			}
+			return null;
+		}
+	, 1, [null,null,['self'],['eventCode'],['details']]);
+		$cls_definition['onDataTakingEvent'] = $method;
 		$method = $pyjs__bind_method2('onClick', function(sender) {
 			if (this['__is_instance__'] === true) {
 				var self = this;
@@ -20957,15 +21662,20 @@ $pyjs['loaded_modules']['index'] = function (__mod_name__) {
 				var self = arguments[0];
 				sender = arguments[1];
 			}
-			var $add5,$add2,$add3,$pyjs_try_err,$add6,$add7,$add4,error,$add8,$add1;
+			var $add5,$add3,$pyjs_try_err,$add6,$add7,$add4,error,$add10,$add8,$add9;
 			try {
-				self['setNewMainPanel'](sender);
+				if ($p['bool']($p['op_eq'](sender, $p['getattr'](self, 'stopTakingDataButton')))) {
+					self['dataRunManager']['stopTakingData']();
+				}
+				else {
+					self['setNewMainPanel'](sender);
+				}
 			} catch($pyjs_try_err) {
 				var $pyjs_try_err_name = (typeof $pyjs_try_err['__name__'] == 'undefined' ? $pyjs_try_err['name'] : $pyjs_try_err['__name__'] );
 				$pyjs['__last_exception__'] = {'error': $pyjs_try_err, 'module': $m};
 				if (($pyjs_try_err_name == $p['Exception']['__name__'])||$p['_isinstance']($pyjs_try_err,$p['Exception'])) {
 					error = $pyjs_try_err;
-					self['status']['setText']($p['__op_add']($add7=$p['__op_add']($add5=$p['__op_add']($add3=$p['__op_add']($add1="Client exception was thrown: '",$add2=$p['str']($p['getattr'](error, '__class__'))),$add4="'='"),$add6=$p['str'](error)),$add8="'"));
+					self['status']['setText']($p['__op_add']($add9=$p['__op_add']($add7=$p['__op_add']($add5=$p['__op_add']($add3="Client exception was thrown: '",$add4=$p['str']($p['getattr'](error, '__class__'))),$add6="'='"),$add8=$p['str'](error)),$add10="'"));
 				} else { $pyjs['__active_exception_stack__'] = $pyjs['__last_exception_stack__']; $pyjs['__last_exception_stack__'] = null; throw $pyjs_try_err; }
 			}
 			return null;
@@ -21001,6 +21711,7 @@ $pyjs['loaded_modules']['index'] = function (__mod_name__) {
 				self['activePanel'] = $p['getattr'](self, 'OccupancyCheckPanel');
 			}
 			self['activePanel']['getPanel']()['setStyleName']('selectedAreaStyle');
+			self['activePanel']['getPanel']()['setWidth']('100%');
 			self['mainPanel']['add'](self['activePanel']['getPanel'](), $p['getattr']($m['DockPanel'], 'CENTER'));
 			return null;
 		}
@@ -21040,27 +21751,6 @@ $pyjs['loaded_modules']['index'] = function (__mod_name__) {
 		for (var $item in $cls_definition) { $data['__setitem__']($item, $cls_definition[$item]); }
 		return $p['_create_class']('Client', $p['tuple']($bases), $data);
 	})();
-	$m['GlibControlService'] = (function(){
-		var $cls_definition = new Object();
-		var $method;
-		$cls_definition['__module__'] = 'index';
-		$method = $pyjs__bind_method2('__init__', function() {
-			if (this['__is_instance__'] === true) {
-				var self = this;
-			} else {
-				var self = arguments[0];
-			}
-
-			$m['JSONProxy']['__init__'](self, 'services/GlibControlProxy.py', $p['list'](['getStates', 'connectedCBCNames', 'I2CRegisterValues', 'setI2CRegisterValues', 'saveStateValues', 'loadStateValues', 'startProcesses', 'killProcesses', 'boardIsReachable', 'stopTakingData', 'startSCurveRun', 'getDataTakingStatus']));
-			return null;
-		}
-	, 1, [null,null,['self']]);
-		$cls_definition['__init__'] = $method;
-		var $bases = new Array($m['JSONProxy']);
-		var $data = $p['dict']();
-		for (var $item in $cls_definition) { $data['__setitem__']($item, $cls_definition[$item]); }
-		return $p['_create_class']('GlibControlService', $p['tuple']($bases), $data);
-	})();
 	if ($p['bool']($p['op_eq']((typeof __name__ == "undefined"?$m['__name__']:__name__), '__main__'))) {
 		$m['app'] = $m['Client']();
 		$m['app']['onModuleLoad']();
@@ -21073,7 +21763,7 @@ $pyjs['loaded_modules']['index'] = function (__mod_name__) {
 
 
 /*
-PYJS_DEPS: ['pyjamas.Window', 'pyjamas', 'pyjamas.ui.RootPanel.RootPanel', 'pyjamas.ui', 'pyjamas.ui.RootPanel', 'pyjamas.ui.DockPanel.DockPanel', 'pyjamas.ui.DockPanel', 'pyjamas.ui.DisclosurePanel.DisclosurePanel', 'pyjamas.ui.DisclosurePanel', 'pyjamas.ui.TextArea.TextArea', 'pyjamas.ui.TextArea', 'pyjamas.ui.Label.Label', 'pyjamas.ui.Label', 'pyjamas.ui.Button.Button', 'pyjamas.ui.Button', 'pyjamas.ui.HTML.HTML', 'pyjamas.ui.HTML', 'pyjamas.ui.VerticalPanel.VerticalPanel', 'pyjamas.ui.VerticalPanel', 'pyjamas.ui.HorizontalPanel.HorizontalPanel', 'pyjamas.ui.HorizontalPanel', 'pyjamas.ui.FlowPanel.FlowPanel', 'pyjamas.ui.FlowPanel', 'pyjamas.ui.ListBox.ListBox', 'pyjamas.ui.ListBox', 'pyjamas.ui.TextBox.TextBox', 'pyjamas.ui.TextBox', 'pyjamas.JSONService.JSONProxy', 'pyjamas.JSONService', 'pyjamas.ui.CSS.StyleSheetCssFile', 'pyjamas.ui.CSS', 'pyjamas.ui.DialogBox.DialogBox', 'pyjamas.ui.DialogBox', 'I2CPanel.I2CPanel', 'I2CPanel', 'OccupancyCheckPanel.OccupancyCheckPanel', 'OccupancyCheckPanel', 'SCurveRunPanel.SCurveRunPanel', 'SCurveRunPanel', 'ErrorMessage.ErrorMessage', 'ErrorMessage']
+PYJS_DEPS: ['pyjamas.Window', 'pyjamas', 'pyjamas.ui.RootPanel.RootPanel', 'pyjamas.ui', 'pyjamas.ui.RootPanel', 'pyjamas.ui.DockPanel.DockPanel', 'pyjamas.ui.DockPanel', 'pyjamas.ui.DisclosurePanel.DisclosurePanel', 'pyjamas.ui.DisclosurePanel', 'pyjamas.ui.TextArea.TextArea', 'pyjamas.ui.TextArea', 'pyjamas.ui.Label.Label', 'pyjamas.ui.Label', 'pyjamas.ui.Button.Button', 'pyjamas.ui.Button', 'pyjamas.ui.HTML.HTML', 'pyjamas.ui.HTML', 'pyjamas.ui.VerticalPanel.VerticalPanel', 'pyjamas.ui.VerticalPanel', 'pyjamas.ui.HorizontalPanel.HorizontalPanel', 'pyjamas.ui.HorizontalPanel', 'pyjamas.ui.FlowPanel.FlowPanel', 'pyjamas.ui.FlowPanel', 'pyjamas.ui.ListBox.ListBox', 'pyjamas.ui.ListBox', 'pyjamas.ui.TextBox.TextBox', 'pyjamas.ui.TextBox', 'pyjamas.JSONService.JSONProxy', 'pyjamas.JSONService', 'pyjamas.ui.CSS.StyleSheetCssFile', 'pyjamas.ui.CSS', 'pyjamas.ui.DialogBox.DialogBox', 'pyjamas.ui.DialogBox', 'pyjamas.ui.HasHorizontalAlignment', 'I2CPanel.I2CPanel', 'I2CPanel', 'OccupancyCheckPanel.OccupancyCheckPanel', 'OccupancyCheckPanel', 'SCurveRunPanel.SCurveRunPanel', 'SCurveRunPanel', 'DataRunManager.DataRunManager', 'DataRunManager', 'ErrorMessage.ErrorMessage', 'ErrorMessage']
 */
 
 --></script>
@@ -30170,6 +30860,64 @@ PYJS_DEPS: ['pyjamas.Canvas.GWTCanvasConsts', 'pyjamas', 'pyjamas.Canvas', 'pyja
 
 --></script>
 <script type="text/javascript"><!--
+/* start module: GlibRPCService */
+$pyjs['loaded_modules']['GlibRPCService'] = function (__mod_name__) {
+	if($pyjs['loaded_modules']['GlibRPCService']['__was_initialized__']) return $pyjs['loaded_modules']['GlibRPCService'];
+	var $m = $pyjs['loaded_modules']['GlibRPCService'];
+	$m['__repr__'] = function() { return '<module: GlibRPCService>'; };
+	$m['__was_initialized__'] = true;
+	if ((__mod_name__ === null) || (typeof __mod_name__ == 'undefined')) __mod_name__ = 'GlibRPCService';
+	$m['__name__'] = __mod_name__;
+
+
+	$m['JSONProxy'] = $p['___import___']('pyjamas.JSONService.JSONProxy', null, null, false);
+	$m['GlibRPCService'] = (function(){
+		var $cls_definition = new Object();
+		var $method;
+		$cls_definition['__module__'] = 'GlibRPCService';
+		$cls_definition['_onlyInstance'] = null;
+		$method = $pyjs__bind_method2('instance', function() {
+
+			if ($p['bool']($p['op_eq']($p['getattr']($m['GlibRPCService'], '_onlyInstance'), null))) {
+				$m['GlibRPCService']['_onlyInstance'] = $m['GlibRPCService']();
+			}
+			return $p['getattr']($m['GlibRPCService'], '_onlyInstance');
+		}
+	, 3, [null,null]);
+		$cls_definition['instance'] = $method;
+		$method = $pyjs__bind_method2('__init__', function() {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+			}
+
+			if ($p['bool'](!$p['op_eq']($p['getattr']($m['GlibRPCService'], '_onlyInstance'), null))) {
+				throw ($p['Exception']("GlibRPCService is a singleton class. Call 'GlibRPCService.instance()' to get the only running instance"));
+			}
+			$m['JSONProxy']['__init__'](self, 'services/GlibControlProxy.py', $p['list'](['getStates', 'connectedCBCNames', 'I2CRegisterValues', 'setI2CRegisterValues', 'saveStateValues', 'loadStateValues', 'startProcesses', 'killProcesses', 'boardIsReachable', 'stopTakingData', 'startSCurveRun', 'startOccupancyCheck', 'getDataTakingStatus', 'getOccupancies']));
+			return null;
+		}
+	, 1, [null,null,['self']]);
+		$cls_definition['__init__'] = $method;
+		var $bases = new Array($m['JSONProxy']);
+		var $data = $p['dict']();
+		for (var $item in $cls_definition) { $data['__setitem__']($item, $cls_definition[$item]); }
+		return $p['_create_class']('GlibRPCService', $p['tuple']($bases), $data);
+	})();
+	return this;
+}; /* end GlibRPCService */
+
+
+/* end module: GlibRPCService */
+
+
+/*
+PYJS_DEPS: ['pyjamas.JSONService.JSONProxy', 'pyjamas', 'pyjamas.JSONService']
+*/
+
+--></script>
+<script type="text/javascript"><!--
 /* start module: pyjamas.Canvas.GWTCanvasImplIE6 */
 $pyjs['loaded_modules']['pyjamas.Canvas.GWTCanvasImplIE6'] = function (__mod_name__) {
 	if($pyjs['loaded_modules']['pyjamas.Canvas.GWTCanvasImplIE6']['__was_initialized__']) return $pyjs['loaded_modules']['pyjamas.Canvas.GWTCanvasImplIE6'];
@@ -31837,8 +32585,10 @@ $pyjs['loaded_modules']['I2CPanel'] = function (__mod_name__) {
 	$m['CheckBox'] = $p['___import___']('pyjamas.ui.CheckBox.CheckBox', null, null, false);
 	$m['Button'] = $p['___import___']('pyjamas.ui.Button.Button', null, null, false);
 	$m['HTML'] = $p['___import___']('pyjamas.ui.HTML.HTML', null, null, false);
+	$m['HasHorizontalAlignment'] = $p['___import___']('pyjamas.ui.HasHorizontalAlignment', null, null, false);
 	$m['Timer'] = $p['___import___']('pyjamas.Timer.Timer', null, null, false);
 	$m['datetime'] = $p['___import___']('datetime.datetime', null, null, false);
+	$m['GlibRPCService'] = $p['___import___']('GlibRPCService.GlibRPCService', null, null, false);
 	$m['I2CPanel'] = (function(){
 		var $cls_definition = new Object();
 		var $method;
@@ -32078,15 +32828,14 @@ $pyjs['loaded_modules']['I2CPanel'] = function (__mod_name__) {
 			for (var $item in $cls_definition) { $data['__setitem__']($item, $cls_definition[$item]); }
 			return $p['_create_class']('DoNothingListener', $p['tuple']($bases), $data);
 		})();
-		$method = $pyjs__bind_method2('__init__', function(rpcService) {
+		$method = $pyjs__bind_method2('__init__', function() {
 			if (this['__is_instance__'] === true) {
 				var self = this;
 			} else {
 				var self = arguments[0];
-				rpcService = arguments[1];
 			}
-
-			self['rpcService'] = rpcService;
+			var cbcListAndCallSettings;
+			self['rpcService'] = $m['GlibRPCService']['instance']();
 			self['mainPanel'] = $m['HorizontalPanel']();
 			self['mainPanel']['setSpacing'](10);
 			self['i2cValueEntries'] = $p['dict']([]);
@@ -32098,13 +32847,16 @@ $pyjs['loaded_modules']['I2CPanel'] = function (__mod_name__) {
 			self['cbcList']['setEnabled'](false);
 			self['cbcList']['addChangeListener'](self);
 			self['rpcService']['connectedCBCNames'](null, $m['I2CPanel']['ConnectedCBCListener']($p['getattr'](self, 'cbcList')));
-			self['mainPanel']['add']($p['getattr'](self, 'cbcList'));
 			self['mainSettings'] = $m['DisclosurePanel']('Main Control Registers');
 			self['channelMasks'] = $m['DisclosurePanel']('Channel Masks');
 			self['channelTrims'] = $m['DisclosurePanel']('Channel Trims');
 			self['callSettings'] = $m['VerticalPanel']('Load/Save States');
+			self['callSettings']['setBorderWidth'](1);
 			self['callSettings']['add']($m['HTML']('<center>Save/Load State</center>'));
-			self['mainPanel']['add']($p['getattr'](self, 'callSettings'));
+			cbcListAndCallSettings = $m['VerticalPanel']();
+			cbcListAndCallSettings['add']($p['getattr'](self, 'cbcList'));
+			cbcListAndCallSettings['add']($p['getattr'](self, 'callSettings'));
+			self['mainPanel']['add'](cbcListAndCallSettings);
 			self['mainPanel']['add']($p['getattr'](self, 'mainSettings'));
 			self['mainPanel']['add']($p['getattr'](self, 'channelMasks'));
 			self['mainPanel']['add']($p['getattr'](self, 'channelTrims'));
@@ -32117,7 +32869,7 @@ $pyjs['loaded_modules']['I2CPanel'] = function (__mod_name__) {
 			self['mainPanel']['add']($p['getattr'](self, 'echo'));
 			return null;
 		}
-	, 1, [null,null,['self'],['rpcService']]);
+	, 1, [null,null,['self']]);
 		$cls_definition['__init__'] = $method;
 		$method = $pyjs__bind_method2('getPanel', function() {
 			if (this['__is_instance__'] === true) {
@@ -32298,18 +33050,15 @@ $pyjs['loaded_modules']['I2CPanel'] = function (__mod_name__) {
 				var self = arguments[0];
 				registerNames = arguments[1];
 			}
-			var newTextBox,maxWidth,$iter13_idx,buttonName,statusBox,$$label,$iter11_idx,$iter13_type,$iter11_iter,$iter12_array,$iter11_array,$iter11_nextval,$mul4,$mul3,$mul2,$mul1,flowPanel,$iter13_nextval,$iter13_iter,$iter12_type,$iter11_type,newPanel,$iter13_array,$iter12_iter,$iter12_idx,$iter12_nextval,newLabels;
+			var $iter11_idx,newTextBox,$iter11_iter,$iter11_type,newPanel,$$label,statusBox,$iter11_array,$iter11_nextval,flowPanel,buttonName;
 			flowPanel = $m['FlowPanel']();
-			newLabels = $p['list']([]);
 			$iter11_iter = registerNames;
 			$iter11_nextval=$p['__iter_prepare']($iter11_iter,false);
 			while (typeof($p['__wrapped_next']($iter11_nextval)['$nextval']) != 'undefined') {
 				buttonName = $iter11_nextval['$nextval'];
 				newPanel = $m['HorizontalPanel']();
-				newLabels['append']($m['Label'](buttonName));
-				newPanel['add'](newLabels['__getitem__']((typeof ($usub1=1)=='number'?
-					-$usub1:
-					$p['op_usub']($usub1))));
+				$$label = $m['Label'](buttonName);
+				newPanel['add']($$label);
 				newTextBox = $m['TextBox']();
 				newTextBox['setEnabled'](false);
 				newTextBox['setWidth'](80);
@@ -32318,6 +33067,10 @@ $pyjs['loaded_modules']['I2CPanel'] = function (__mod_name__) {
 				statusBox['setWidth'](30);
 				newPanel['add'](newTextBox);
 				newPanel['add'](statusBox);
+				newPanel['setCellHorizontalAlignment'](newTextBox, $p['getattr']($m['HasHorizontalAlignment'], 'ALIGN_RIGHT'));
+				newPanel['setCellHorizontalAlignment'](statusBox, $p['getattr']($m['HasHorizontalAlignment'], 'ALIGN_RIGHT'));
+				newPanel['setCellWidth'](statusBox, '20px');
+				newPanel['setWidth']('100%');
 				newTextBox['setText']('select chip...');
 				newTextBox['addChangeListener'](self);
 				newTextBox['setTitle'](buttonName);
@@ -32326,25 +33079,6 @@ $pyjs['loaded_modules']['I2CPanel'] = function (__mod_name__) {
 				statusBox['setTitle'](buttonName);
 				statusBox['setText']('...');
 				flowPanel['add'](newPanel);
-			}
-			maxWidth = 0;
-			$iter12_iter = newLabels;
-			$iter12_nextval=$p['__iter_prepare']($iter12_iter,false);
-			while (typeof($p['__wrapped_next']($iter12_nextval)['$nextval']) != 'undefined') {
-				$$label = $iter12_nextval['$nextval'];
-				if ($p['bool'](($p['cmp']((typeof ($mul1=$p['len']($$label['getText']()))==typeof ($mul2=9) && typeof $mul1=='number'?
-					$mul1*$mul2:
-					$p['op_mul']($mul1,$mul2)), maxWidth) == 1))) {
-					maxWidth = (typeof ($mul3=$p['len']($$label['getText']()))==typeof ($mul4=9) && typeof $mul3=='number'?
-						$mul3*$mul4:
-						$p['op_mul']($mul3,$mul4));
-				}
-			}
-			$iter13_iter = newLabels;
-			$iter13_nextval=$p['__iter_prepare']($iter13_iter,false);
-			while (typeof($p['__wrapped_next']($iter13_nextval)['$nextval']) != 'undefined') {
-				$$label = $iter13_nextval['$nextval'];
-				$$label['setWidth'](maxWidth);
 			}
 			return flowPanel;
 		}
@@ -32356,15 +33090,15 @@ $pyjs['loaded_modules']['I2CPanel'] = function (__mod_name__) {
 			} else {
 				var self = arguments[0];
 			}
-			var vertPanel,selectionNames,$iter14_array,checkBox,$iter14_type,name,launch,fileTextBox,$$label,state,$iter14_iter,registerSelection,$iter14_idx,$iter14_nextval;
+			var vertPanel,selectionNames,checkBox,name,launch,$iter12_array,fileTextBox,$iter12_nextval,$iter12_iter,state,$$label,$iter12_idx,registerSelection,$iter12_type;
 			vertPanel = $m['VerticalPanel']();
 			vertPanel['setSpacing'](10);
 			selectionNames = $p['list'](['Main Control', 'Masks', 'Trims']);
 			registerSelection = $m['VerticalPanel']();
-			$iter14_iter = selectionNames;
-			$iter14_nextval=$p['__iter_prepare']($iter14_iter,false);
-			while (typeof($p['__wrapped_next']($iter14_nextval)['$nextval']) != 'undefined') {
-				name = $iter14_nextval['$nextval'];
+			$iter12_iter = selectionNames;
+			$iter12_nextval=$p['__iter_prepare']($iter12_iter,false);
+			while (typeof($p['__wrapped_next']($iter12_nextval)['$nextval']) != 'undefined') {
+				name = $iter12_nextval['$nextval'];
 				checkBox = $m['CheckBox'](name);
 				checkBox['setTitle'](name);
 				$p['getattr'](self, 'stateValueEntries')['__setitem__'](name, checkBox);
@@ -32423,7 +33157,7 @@ $pyjs['loaded_modules']['I2CPanel'] = function (__mod_name__) {
 
 
 /*
-PYJS_DEPS: ['pyjamas.ui.HorizontalPanel.HorizontalPanel', 'pyjamas', 'pyjamas.ui', 'pyjamas.ui.HorizontalPanel', 'pyjamas.ui.VerticalPanel.VerticalPanel', 'pyjamas.ui.VerticalPanel', 'pyjamas.ui.FlowPanel.FlowPanel', 'pyjamas.ui.FlowPanel', 'pyjamas.ui.DisclosurePanel.DisclosurePanel', 'pyjamas.ui.DisclosurePanel', 'pyjamas.ui.ListBox.ListBox', 'pyjamas.ui.ListBox', 'pyjamas.ui.Label.Label', 'pyjamas.ui.Label', 'pyjamas.ui.TextBox.TextBox', 'pyjamas.ui.TextBox', 'ErrorMessage.ErrorMessage', 'ErrorMessage', 'pyjamas.ui.CheckBox.CheckBox', 'pyjamas.ui.CheckBox', 'pyjamas.ui.Button.Button', 'pyjamas.ui.Button', 'pyjamas.ui.HTML.HTML', 'pyjamas.ui.HTML', 'pyjamas.Timer.Timer', 'pyjamas.Timer', 'datetime.datetime', 'datetime']
+PYJS_DEPS: ['pyjamas.ui.HorizontalPanel.HorizontalPanel', 'pyjamas', 'pyjamas.ui', 'pyjamas.ui.HorizontalPanel', 'pyjamas.ui.VerticalPanel.VerticalPanel', 'pyjamas.ui.VerticalPanel', 'pyjamas.ui.FlowPanel.FlowPanel', 'pyjamas.ui.FlowPanel', 'pyjamas.ui.DisclosurePanel.DisclosurePanel', 'pyjamas.ui.DisclosurePanel', 'pyjamas.ui.ListBox.ListBox', 'pyjamas.ui.ListBox', 'pyjamas.ui.Label.Label', 'pyjamas.ui.Label', 'pyjamas.ui.TextBox.TextBox', 'pyjamas.ui.TextBox', 'ErrorMessage.ErrorMessage', 'ErrorMessage', 'pyjamas.ui.CheckBox.CheckBox', 'pyjamas.ui.CheckBox', 'pyjamas.ui.Button.Button', 'pyjamas.ui.Button', 'pyjamas.ui.HTML.HTML', 'pyjamas.ui.HTML', 'pyjamas.ui.HasHorizontalAlignment', 'pyjamas.Timer.Timer', 'pyjamas.Timer', 'datetime.datetime', 'datetime', 'GlibRPCService.GlibRPCService', 'GlibRPCService']
 */
 
 --></script>
@@ -32446,14 +33180,15 @@ $pyjs['loaded_modules']['SCurveRunPanel'] = function (__mod_name__) {
 	$m['ListBox'] = $p['___import___']('pyjamas.ui.ListBox.ListBox', null, null, false);
 	$m['Label'] = $p['___import___']('pyjamas.ui.Label.Label', null, null, false);
 	$m['TextBox'] = $p['___import___']('pyjamas.ui.TextBox.TextBox', null, null, false);
-	$m['ErrorMessage'] = $p['___import___']('ErrorMessage.ErrorMessage', null, null, false);
 	$m['Button'] = $p['___import___']('pyjamas.ui.Button.Button', null, null, false);
 	$m['Canvas'] = $p['___import___']('pyjamas.Canvas.GWTCanvas.GWTCanvas', null, null, false);
 	$m['Composite'] = $p['___import___']('pyjamas.ui.Composite.Composite', null, null, false);
 	$m['Color'] = $p['___import___']('pyjamas.Canvas.Color', null, null, false);
 	$m['loadImages'] = $p['___import___']('pyjamas.Canvas.ImageLoader.loadImages', null, null, false);
 	$m['Timer'] = $p['___import___']('pyjamas.Timer.Timer', null, null, false);
-	$m['datetime'] = $p['___import___']('datetime.datetime', null, null, false);
+	$m['ErrorMessage'] = $p['___import___']('ErrorMessage.ErrorMessage', null, null, false);
+	$m['GlibRPCService'] = $p['___import___']('GlibRPCService.GlibRPCService', null, null, false);
+	$m['DataRunManager'] = $p['___import___']('DataRunManager.DataRunManager', null, null, false);
 	$m['SCurveRunPanel'] = (function(){
 		var $cls_definition = new Object();
 		var $method;
@@ -32660,15 +33395,15 @@ $pyjs['loaded_modules']['SCurveRunPanel'] = function (__mod_name__) {
 			for (var $item in $cls_definition) { $data['__setitem__']($item, $cls_definition[$item]); }
 			return $p['_create_class']('DataTakingStatusListener', $p['tuple']($bases), $data);
 		})();
-		$method = $pyjs__bind_method2('__init__', function(rpcService) {
+		$method = $pyjs__bind_method2('__init__', function() {
 			if (this['__is_instance__'] === true) {
 				var self = this;
 			} else {
 				var self = arguments[0];
-				rpcService = arguments[1];
 			}
 
-			self['rpcService'] = rpcService;
+			self['rpcService'] = $m['GlibRPCService']['instance']();
+			self['dataRunManager'] = $m['DataRunManager']['instance']();
 			self['mainPanel'] = $m['VerticalPanel']();
 			self['mainPanel']['setSpacing'](15);
 			self['controlValueEntries'] = $p['dict']([]);
@@ -32680,20 +33415,42 @@ $pyjs['loaded_modules']['SCurveRunPanel'] = function (__mod_name__) {
 			self['launchButton'] = $m['Button']('Launch Now');
 			self['launchButton']['addClickListener'](self);
 			self['launchButton']['setEnabled'](true);
-			self['getStatusButton'] = $m['Button']('Get Status');
-			self['getStatusButton']['addClickListener'](self);
-			self['getStatusButton']['setEnabled'](true);
 			self['mainPanel']['add']($p['getattr'](self, 'mainSettings'));
 			self['mainPanel']['add']($p['getattr'](self, 'startButton'));
 			self['mainPanel']['add']($p['getattr'](self, 'launchButton'));
-			self['mainPanel']['add']($p['getattr'](self, 'getStatusButton'));
 			self['mainPanel']['add']($p['getattr'](self, 'echo'));
+			self['dataRunManager']['registerEventHandler'](self);
 			self['timer'] = $pyjs_kwargs_call(null, $m['Timer'], null, null, [{'notify':$p['getattr'](self, 'updateStatus')}]);
-			self['timer']['scheduleRepeating'](500);
 			return null;
 		}
-	, 1, [null,null,['self'],['rpcService']]);
+	, 1, [null,null,['self']]);
 		$cls_definition['__init__'] = $method;
+		$method = $pyjs__bind_method2('onDataTakingEvent', function(eventCode, details) {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+				eventCode = arguments[1];
+				details = arguments[2];
+			}
+			var $add10,$add7,$add8,$add9,$mul2,$mul1;
+			if ($p['bool']($p['op_eq'](eventCode, $p['getattr']($m['DataRunManager'], 'DataTakingStartedEvent')))) {
+				self['echo']['setText']('Taking data... ');
+				self['launchButton']['setEnabled'](false);
+			}
+			else if ($p['bool']($p['op_eq'](eventCode, $p['getattr']($m['DataRunManager'], 'DataTakingFinishedEvent')))) {
+				self['echo']['setText']('Data taking finished');
+				self['launchButton']['setEnabled'](true);
+			}
+			else if ($p['bool']($p['op_eq'](eventCode, $p['getattr']($m['DataRunManager'], 'DataTakingStatusEvent')))) {
+				self['echo']['setText']($p['__op_add']($add9=$p['sprintf']('%3d%% - ', $p['float_int']($p['__op_add']($add7=(typeof ($mul1=details['__getitem__']('fractionComplete'))==typeof ($mul2=100) && typeof $mul1=='number'?
+					$mul1*$mul2:
+					$p['op_mul']($mul1,$mul2)),$add8=0.5))),$add10=details['__getitem__']('statusString')));
+			}
+			return null;
+		}
+	, 1, [null,null,['self'],['eventCode'],['details']]);
+		$cls_definition['onDataTakingEvent'] = $method;
 		$method = $pyjs__bind_method2('onChange', function(sender) {
 			if (this['__is_instance__'] === true) {
 				var self = this;
@@ -32713,11 +33470,14 @@ $pyjs['loaded_modules']['SCurveRunPanel'] = function (__mod_name__) {
 				var self = arguments[0];
 				sender = arguments[1];
 			}
-
+			var stepSize,rangeLow,rangeHigh;
 			self['msg'] = $p['dict']([['RangeLo', 50], ['RangeHi', 150], ['Steps', 1], ['FileName', 'test.png']]);
 			if ($p['bool']($p['op_eq'](sender, $p['getattr'](self, 'launchButton')))) {
-				self['echo']['setText']('Querying');
-				self['rpcService']['startSCurveRun'](null, $m['SCurveRunPanel']['DoNothingListener']());
+				self['echo']['setText']('Initiating run');
+				rangeHigh = $p['float_int'](self['rangeHighBox']['getText']());
+				rangeLow = $p['float_int'](self['rangeLowBox']['getText']());
+				stepSize = $p['float_int'](self['stepSizeBox']['getText']());
+				self['dataRunManager']['startSCurveRun']($p['range'](rangeLow, rangeHigh, stepSize));
 			}
 			return null;
 		}
@@ -32753,7 +33513,7 @@ $pyjs['loaded_modules']['SCurveRunPanel'] = function (__mod_name__) {
 				var self = arguments[0];
 				controlNames = arguments[1];
 			}
-			var newTextBox,maxWidth,$iter3_type,$iter4_type,$iter4_iter,buttonName,$iter3_idx,$iter2_iter,$$label,$iter3_iter,flowPanel,$iter2_type,$iter2_idx,$iter3_array,$mul4,$mul3,$mul2,$mul1,$iter2_nextval,$iter4_nextval,newPanel,$iter4_idx,newLabels,$iter4_array,$iter3_nextval,$iter2_array;
+			var newTextBox,maxWidth,$iter3_type,$iter4_type,$iter4_iter,buttonName,$iter3_idx,$iter2_iter,$$label,$iter3_iter,flowPanel,$iter2_type,$iter2_idx,$iter3_array,$mul6,$mul5,$mul4,$mul3,$iter2_nextval,$iter4_nextval,newPanel,$iter4_idx,newLabels,$iter4_array,$iter3_nextval,$iter2_array;
 			flowPanel = $m['FlowPanel']();
 			newLabels = $p['list']([]);
 			$iter2_iter = controlNames;
@@ -32771,12 +33531,15 @@ $pyjs['loaded_modules']['SCurveRunPanel'] = function (__mod_name__) {
 				newPanel['add'](newTextBox);
 				if ($p['bool']($p['op_eq'](buttonName, 'RangeLo'))) {
 					newTextBox['setText']('100');
+					self['rangeLowBox'] = newTextBox;
 				}
 				else if ($p['bool']($p['op_eq'](buttonName, 'RangeHi'))) {
 					newTextBox['setText']('150');
+					self['rangeHighBox'] = newTextBox;
 				}
 				else if ($p['bool']($p['op_eq'](buttonName, 'Steps'))) {
 					newTextBox['setText']('1');
+					self['stepSizeBox'] = newTextBox;
 				}
 				else if ($p['bool']($p['op_eq'](buttonName, 'FileName'))) {
 					newTextBox['setText']('TestRun.png');
@@ -32790,12 +33553,12 @@ $pyjs['loaded_modules']['SCurveRunPanel'] = function (__mod_name__) {
 			$iter3_nextval=$p['__iter_prepare']($iter3_iter,false);
 			while (typeof($p['__wrapped_next']($iter3_nextval)['$nextval']) != 'undefined') {
 				$$label = $iter3_nextval['$nextval'];
-				if ($p['bool'](($p['cmp']((typeof ($mul1=$p['len']($$label['getText']()))==typeof ($mul2=9) && typeof $mul1=='number'?
-					$mul1*$mul2:
-					$p['op_mul']($mul1,$mul2)), maxWidth) == 1))) {
-					maxWidth = (typeof ($mul3=$p['len']($$label['getText']()))==typeof ($mul4=9) && typeof $mul3=='number'?
-						$mul3*$mul4:
-						$p['op_mul']($mul3,$mul4));
+				if ($p['bool'](($p['cmp']((typeof ($mul3=$p['len']($$label['getText']()))==typeof ($mul4=9) && typeof $mul3=='number'?
+					$mul3*$mul4:
+					$p['op_mul']($mul3,$mul4)), maxWidth) == 1))) {
+					maxWidth = (typeof ($mul5=$p['len']($$label['getText']()))==typeof ($mul6=9) && typeof $mul5=='number'?
+						$mul5*$mul6:
+						$p['op_mul']($mul5,$mul6));
 				}
 			}
 			$iter4_iter = newLabels;
@@ -32878,7 +33641,7 @@ $pyjs['loaded_modules']['SCurveRunPanel'] = function (__mod_name__) {
 
 
 /*
-PYJS_DEPS: ['pyjamas.ui.HorizontalPanel.HorizontalPanel', 'pyjamas', 'pyjamas.ui', 'pyjamas.ui.HorizontalPanel', 'pyjamas.ui.HTML.HTML', 'pyjamas.ui.HTML', 'pyjamas.ui.VerticalPanel.VerticalPanel', 'pyjamas.ui.VerticalPanel', 'pyjamas.ui.FlowPanel.FlowPanel', 'pyjamas.ui.FlowPanel', 'pyjamas.ui.DisclosurePanel.DisclosurePanel', 'pyjamas.ui.DisclosurePanel', 'pyjamas.ui.ListBox.ListBox', 'pyjamas.ui.ListBox', 'pyjamas.ui.Label.Label', 'pyjamas.ui.Label', 'pyjamas.ui.TextBox.TextBox', 'pyjamas.ui.TextBox', 'ErrorMessage.ErrorMessage', 'ErrorMessage', 'pyjamas.ui.Button.Button', 'pyjamas.ui.Button', 'pyjamas.Canvas.GWTCanvas.GWTCanvas', 'pyjamas.Canvas', 'pyjamas.Canvas.GWTCanvas', 'pyjamas.ui.Composite.Composite', 'pyjamas.ui.Composite', 'pyjamas.Canvas.Color', 'pyjamas.Canvas.ImageLoader.loadImages', 'pyjamas.Canvas.ImageLoader', 'pyjamas.Timer.Timer', 'pyjamas.Timer', 'datetime.datetime', 'datetime']
+PYJS_DEPS: ['pyjamas.ui.HorizontalPanel.HorizontalPanel', 'pyjamas', 'pyjamas.ui', 'pyjamas.ui.HorizontalPanel', 'pyjamas.ui.HTML.HTML', 'pyjamas.ui.HTML', 'pyjamas.ui.VerticalPanel.VerticalPanel', 'pyjamas.ui.VerticalPanel', 'pyjamas.ui.FlowPanel.FlowPanel', 'pyjamas.ui.FlowPanel', 'pyjamas.ui.DisclosurePanel.DisclosurePanel', 'pyjamas.ui.DisclosurePanel', 'pyjamas.ui.ListBox.ListBox', 'pyjamas.ui.ListBox', 'pyjamas.ui.Label.Label', 'pyjamas.ui.Label', 'pyjamas.ui.TextBox.TextBox', 'pyjamas.ui.TextBox', 'pyjamas.ui.Button.Button', 'pyjamas.ui.Button', 'pyjamas.Canvas.GWTCanvas.GWTCanvas', 'pyjamas.Canvas', 'pyjamas.Canvas.GWTCanvas', 'pyjamas.ui.Composite.Composite', 'pyjamas.ui.Composite', 'pyjamas.Canvas.Color', 'pyjamas.Canvas.ImageLoader.loadImages', 'pyjamas.Canvas.ImageLoader', 'pyjamas.Timer.Timer', 'pyjamas.Timer', 'ErrorMessage.ErrorMessage', 'ErrorMessage', 'GlibRPCService.GlibRPCService', 'GlibRPCService', 'DataRunManager.DataRunManager', 'DataRunManager']
 */
 
 --></script>
@@ -35608,6 +36371,298 @@ $pyjs['loaded_modules']['pyjd'] = function (__mod_name__) {
 /* end module: pyjd */
 
 
+
+--></script>
+<script type="text/javascript"><!--
+/* start module: DataRunManager */
+$pyjs['loaded_modules']['DataRunManager'] = function (__mod_name__) {
+	if($pyjs['loaded_modules']['DataRunManager']['__was_initialized__']) return $pyjs['loaded_modules']['DataRunManager'];
+	var $m = $pyjs['loaded_modules']['DataRunManager'];
+	$m['__repr__'] = function() { return '<module: DataRunManager>'; };
+	$m['__was_initialized__'] = true;
+	if ((__mod_name__ === null) || (typeof __mod_name__ == 'undefined')) __mod_name__ = 'DataRunManager';
+	$m['__name__'] = __mod_name__;
+
+
+	$m['Timer'] = $p['___import___']('pyjamas.Timer.Timer', null, null, false);
+	$m['GlibRPCService'] = $p['___import___']('GlibRPCService.GlibRPCService', null, null, false);
+	$m['ErrorMessage'] = $p['___import___']('ErrorMessage.ErrorMessage', null, null, false);
+	$m['AlreadyTakingDataError'] = (function(){
+		var $cls_definition = new Object();
+		var $method;
+		$cls_definition['__module__'] = 'DataRunManager';
+		$method = $pyjs__bind_method2('__init__', function(message) {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+				message = arguments[1];
+			}
+			if (typeof message == 'undefined') message=arguments['callee']['__args__'][3][1];
+			var $add2,$add3,$add1,$add4;
+			if ($p['bool'](!$p['op_eq'](message, null))) {
+				message = $p['__op_add']($add1=' ',$add2=message);
+			}
+			$p['Exception']['__init__'](self, $p['__op_add']($add3='Data taking is already in progress',$add4=message));
+			return null;
+		}
+	, 1, [null,null,['self'],['message', null]]);
+		$cls_definition['__init__'] = $method;
+		var $bases = new Array($p['Exception']);
+		var $data = $p['dict']();
+		for (var $item in $cls_definition) { $data['__setitem__']($item, $cls_definition[$item]); }
+		return $p['_create_class']('AlreadyTakingDataError', $p['tuple']($bases), $data);
+	})();
+	$m['DataRunManager'] = (function(){
+		var $cls_definition = new Object();
+		var $method;
+		$cls_definition['__module__'] = 'DataRunManager';
+		$cls_definition['pollingTime'] = 1000;
+		$cls_definition['idlePollingTime'] = 8000;
+		$cls_definition['_onlyInstance'] = null;
+		$cls_definition['DataTakingStartedEvent'] = 0;
+		$cls_definition['DataTakingFinishedEvent'] = 1;
+		$cls_definition['DataTakingStatusEvent'] = 3;
+		$method = $pyjs__bind_method2('instance', function() {
+
+			if ($p['bool']($p['op_eq']($p['getattr']($m['DataRunManager'], '_onlyInstance'), null))) {
+				$m['DataRunManager']['_onlyInstance'] = $m['DataRunManager']();
+			}
+			return $p['getattr']($m['DataRunManager'], '_onlyInstance');
+		}
+	, 3, [null,null]);
+		$cls_definition['instance'] = $method;
+		$method = $pyjs__bind_method2('__init__', function() {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+			}
+
+			if ($p['bool'](!$p['op_eq']($p['getattr']($m['DataRunManager'], '_onlyInstance'), null))) {
+				throw ($p['Exception']("DataRunManager is a singleton class. Call 'DataRunManager.instance()' to get the only running instance"));
+			}
+			self['rpcService'] = $m['GlibRPCService']['instance']();
+			self['pollingTimer'] = $pyjs_kwargs_call(null, $m['Timer'], null, null, [{'notify':$p['getattr'](self, 'pollRPCService')}]);
+			self['eventHandlers'] = $p['list']([]);
+			self['fractionComplete'] = 1;
+			self['statusString'] = 'Uninitialised';
+			self['pollRPCService']();
+			return null;
+		}
+	, 1, [null,null,['self']]);
+		$cls_definition['__init__'] = $method;
+		$method = $pyjs__bind_method2('onRemoteResponse', function(response, request_info) {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+				response = arguments[1];
+				request_info = arguments[2];
+			}
+			var $add6,$add5;
+			if ($p['bool']($p['op_eq']($p['getattr'](request_info, 'method'), 'getDataTakingStatus'))) {
+				self['_onGetDataTakingStatusResponse'](response);
+			}
+			else if ($p['bool']($p['op_eq']($p['getattr'](request_info, 'method'), 'startSCurveRun'))) {
+				self['_onStartSCurveRunResponse'](response);
+			}
+			else if ($p['bool']($p['op_eq']($p['getattr'](request_info, 'method'), 'startOccupancyCheck'))) {
+				self['_onStartOccupancyCheckResponse'](response);
+			}
+			else if ($p['bool']($p['op_eq']($p['getattr'](request_info, 'method'), 'stopTakingData'))) {
+			}
+			else {
+				$m['ErrorMessage']($p['__op_add']($add5='Received an unexpected response for method ',$add6=$p['getattr'](request_info, 'method')));
+			}
+			return null;
+		}
+	, 1, [null,null,['self'],['response'],['request_info']]);
+		$cls_definition['onRemoteResponse'] = $method;
+		$method = $pyjs__bind_method2('onRemoteError', function(code, message, request_info) {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+				code = arguments[1];
+				message = arguments[2];
+				request_info = arguments[3];
+			}
+			var $add7,$add8;
+			$m['ErrorMessage']($p['__op_add']($add7='Unable to contact server: ',$add8=$p['str'](message)));
+			return null;
+		}
+	, 1, [null,null,['self'],['code'],['message'],['request_info']]);
+		$cls_definition['onRemoteError'] = $method;
+		$method = $pyjs__bind_method2('_onGetDataTakingStatusResponse', function(response) {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+				response = arguments[1];
+			}
+			var $iter1_array,$or1,statusHasChanged,eventCode,$or2,newStatus,$iter1_iter,handler,details,newFraction,$iter1_nextval,$iter1_idx,$iter1_type;
+			newFraction = response['__getitem__']('fractionComplete');
+			newStatus = response['__getitem__']('statusString');
+			statusHasChanged = false;
+			if ($p['bool'](($p['bool']($or1=!$p['op_eq']($p['getattr'](self, 'fractionComplete'), newFraction))?$or1:!$p['op_eq']($p['getattr'](self, 'statusString'), newStatus)))) {
+				statusHasChanged = true;
+			}
+			self['fractionComplete'] = newFraction;
+			self['statusString'] = newStatus;
+			if ($p['bool'](statusHasChanged)) {
+				if ($p['bool'](((($p['cmp']($p['getattr'](self, 'fractionComplete'), 1))|1) == 1))) {
+					eventCode = $p['getattr']($m['DataRunManager'], 'DataTakingFinishedEvent');
+					details = null;
+				}
+				else {
+					eventCode = $p['getattr']($m['DataRunManager'], 'DataTakingStatusEvent');
+					details = $p['dict']([['fractionComplete', $p['getattr'](self, 'fractionComplete')], ['statusString', $p['getattr'](self, 'statusString')]]);
+				}
+				$iter1_iter = $p['getattr'](self, 'eventHandlers');
+				$iter1_nextval=$p['__iter_prepare']($iter1_iter,false);
+				while (typeof($p['__wrapped_next']($iter1_nextval)['$nextval']) != 'undefined') {
+					handler = $iter1_nextval['$nextval'];
+					handler['onDataTakingEvent'](eventCode, details);
+				}
+			}
+			if ($p['bool'](($p['cmp']($p['getattr'](self, 'fractionComplete'), 1) == -1))) {
+				self['pollingTimer']['schedule']($p['getattr']($m['DataRunManager'], 'pollingTime'));
+			}
+			else {
+				self['pollingTimer']['schedule']($p['getattr']($m['DataRunManager'], 'idlePollingTime'));
+			}
+			return null;
+		}
+	, 1, [null,null,['self'],['response']]);
+		$cls_definition['_onGetDataTakingStatusResponse'] = $method;
+		$method = $pyjs__bind_method2('_onStartSCurveRunResponse', function(reponse) {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+				reponse = arguments[1];
+			}
+			var $iter2_nextval,$iter2_type,$iter2_iter,$iter2_idx,handler,$iter2_array;
+			self['statusString'] = 'S-curve run started';
+			self['pollingTimer']['schedule']($p['getattr']($m['DataRunManager'], 'pollingTime'));
+			$iter2_iter = $p['getattr'](self, 'eventHandlers');
+			$iter2_nextval=$p['__iter_prepare']($iter2_iter,false);
+			while (typeof($p['__wrapped_next']($iter2_nextval)['$nextval']) != 'undefined') {
+				handler = $iter2_nextval['$nextval'];
+				handler['onDataTakingEvent']($p['getattr']($m['DataRunManager'], 'DataTakingStartedEvent'), null);
+			}
+			return null;
+		}
+	, 1, [null,null,['self'],['reponse']]);
+		$cls_definition['_onStartSCurveRunResponse'] = $method;
+		$method = $pyjs__bind_method2('_onStartOccupancyCheckResponse', function(reponse) {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+				reponse = arguments[1];
+			}
+			var $iter3_idx,$iter3_type,handler,$iter3_iter,$iter3_array,$iter3_nextval;
+			self['statusString'] = 'Occupancy check started';
+			self['pollingTimer']['schedule']($p['getattr']($m['DataRunManager'], 'pollingTime'));
+			$iter3_iter = $p['getattr'](self, 'eventHandlers');
+			$iter3_nextval=$p['__iter_prepare']($iter3_iter,false);
+			while (typeof($p['__wrapped_next']($iter3_nextval)['$nextval']) != 'undefined') {
+				handler = $iter3_nextval['$nextval'];
+				handler['onDataTakingEvent']($p['getattr']($m['DataRunManager'], 'DataTakingStartedEvent'), null);
+			}
+			return null;
+		}
+	, 1, [null,null,['self'],['reponse']]);
+		$cls_definition['_onStartOccupancyCheckResponse'] = $method;
+		$method = $pyjs__bind_method2('pollRPCService', function() {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+			}
+
+			self['rpcService']['getDataTakingStatus'](null, self);
+			return null;
+		}
+	, 1, [null,null,['self']]);
+		$cls_definition['pollRPCService'] = $method;
+		$method = $pyjs__bind_method2('registerEventHandler', function(handler) {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+				handler = arguments[1];
+			}
+
+			self['eventHandlers']['append'](handler);
+			return null;
+		}
+	, 1, [null,null,['self'],['handler']]);
+		$cls_definition['registerEventHandler'] = $method;
+		$method = $pyjs__bind_method2('startSCurveRun', function(thresholds) {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+				thresholds = arguments[1];
+			}
+
+			if ($p['bool'](!$p['op_eq']($p['getattr'](self, 'fractionComplete'), 1))) {
+				throw ($m['AlreadyTakingDataError']());
+			}
+			self['fractionComplete'] = 0;
+			self['statusString'] = 'Initiating s-curve run';
+			self['rpcService']['startSCurveRun'](thresholds, self);
+			return null;
+		}
+	, 1, [null,null,['self'],['thresholds']]);
+		$cls_definition['startSCurveRun'] = $method;
+		$method = $pyjs__bind_method2('startOccupancyCheck', function() {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+			}
+
+			if ($p['bool'](!$p['op_eq']($p['getattr'](self, 'fractionComplete'), 1))) {
+				throw ($m['AlreadyTakingDataError']());
+			}
+			self['fractionComplete'] = 0;
+			self['statusString'] = 'Initiating occupancy check';
+			self['rpcService']['startOccupancyCheck'](null, self);
+			return null;
+		}
+	, 1, [null,null,['self']]);
+		$cls_definition['startOccupancyCheck'] = $method;
+		$method = $pyjs__bind_method2('stopTakingData', function() {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+			}
+
+			self['rpcService']['stopTakingData'](null, self);
+			return null;
+		}
+	, 1, [null,null,['self']]);
+		$cls_definition['stopTakingData'] = $method;
+		var $bases = new Array($p['object']);
+		var $data = $p['dict']();
+		for (var $item in $cls_definition) { $data['__setitem__']($item, $cls_definition[$item]); }
+		return $p['_create_class']('DataRunManager', $p['tuple']($bases), $data);
+	})();
+	return this;
+}; /* end DataRunManager */
+
+
+/* end module: DataRunManager */
+
+
+/*
+PYJS_DEPS: ['pyjamas.Timer.Timer', 'pyjamas', 'pyjamas.Timer', 'GlibRPCService.GlibRPCService', 'GlibRPCService', 'ErrorMessage.ErrorMessage', 'ErrorMessage']
+*/
 
 --></script>
 <script type="text/javascript"><!--
@@ -40312,7 +41367,7 @@ function prepare_app() {
         };
         wait();
     }
-    wait_for_loading_modules(app_imported, ['pyjamas.ui','pyjamas.ui.GlassWidget','pyjamas.ui.InnerText','pyjamas.ui.ClickListener','pyjamas.ui.DialogBox','pyjamas.JSONService','pyjamas.Canvas.RadialGradientImplDefault','pyjamas.Canvas.GWTCanvas','struct','pyjamas.ui.CheckBox','base64','pyjamas.ui.Label','pyjamas.Canvas.GWTCanvasImplIE6','datetime','pyjamas.ui.Image','pyjamas.Window','pyjslib','pyjamas.Canvas.GWTCanvasImplDefault','pyjamas.ui.InputListener','pyjamas.Canvas.VMLContext','pyjamas.Canvas.CanvasGradientImplIE6','pyjamas.Canvas.Color','pyjamas.EventController','pyjamas.ui.HTML','pyjamas.ui.UIObject','pyjamas.ui.FlowPanel','pyjamas.ui.Widget','pyjamas.Canvas.RadialGradientImplIE6','index','pyjamas.ui.TextBox','pyjamas.ui.MouseListener','pyjamas.ui.KeyboardListener','math','pyjamas.Canvas.LinearGradientImplDefault','sys','pyjamas.ui.ButtonBase','ErrorMessage','pyjamas.ui.CellFormatter','pyjamas.ui.HTMLTable','pyjamas.ui.TextArea','pyjamas.Timer','pyjamas.ui.FocusWidget','pyjamas.Canvas.GWTCanvasImplIEConsts','pygwt','pyjamas.Canvas.GWTCanvasConsts','pyjamas.ui.FlexTable','pyjamas.ui.Focus','binascii','SCurveRunPanel','json','pyjamas.HTTPRequest','pyjamas.ui.DisclosurePanel','pyjamas.ui.AbsolutePanel','pyjamas.ui.Event','pyjamas.ui.Button','OccupancyCheckPanel','pyjamas.ui.CSS','pyjamas.ui.Panel','pyjamas.Factory','pyjamas.Canvas.JSOStack','pyjamas.ui.SimplePanel','pyjamas.ui.RootPanel','pyjamas.Canvas.ColorStop','pyjamas.ui.FocusListener','traceback','pyjamas.ui.PopupPanel','I2CPanel','pyjamas.ui.DockPanel','pyjamas.ui.ChangeListener','pyjamas.Location','pyjamas.ui.VerticalPanel','pyjamas.Canvas.ImageLoader','pyjamas.Canvas.PathElement','pyjamas.Canvas.LinearGradientImplIE6','pyjamas.ui.TextBoxBase','pyjamas','pyjamas.ui.HorizontalPanel','pyjamas.ui.RowFormatter','pyjamas.ui.CellPanel','getopt','pyjamas.ui.DragHandler','pyjamas.ui.DropHandler','pyjamas.ui.ComplexPanel','pyjamas.ui.Composite','pyjd','pyjamas.ui.FlexCellFormatter','pyjamas.ui.InnerHTML','pyjamas.Canvas.CanvasGradientImplDefault','pyjamas.Canvas','pyjamas.DOM','time','pyjamas.ui.ListBox']);
+    wait_for_loading_modules(app_imported, ['pyjamas.ui','pyjamas.ui.GlassWidget','pyjamas.ui.InnerText','pyjamas.ui.ClickListener','pyjamas.ui.DialogBox','pyjamas.JSONService','pyjamas.Canvas.RadialGradientImplDefault','pyjamas.Canvas.GWTCanvas','struct','pyjamas.ui.CheckBox','base64','pyjamas.ui.Label','pyjamas.ui.FlexTable','pyjamas.Canvas.VMLContext','datetime','pyjamas.ui.Image','pyjamas.Window','pyjslib','pyjamas.Canvas.GWTCanvasImplDefault','pyjamas.ui.InputListener','GlibRPCService','pyjamas.Canvas.CanvasGradientImplIE6','pyjamas.Canvas.Color','math','pyjamas.EventController','pyjamas.ui.HTML','pyjamas.ui.UIObject','pyjamas.ui.FlowPanel','pyjamas.ui.Widget','pyjamas.ui.ChangeListener','pyjamas.Canvas.RadialGradientImplIE6','index','pyjamas.ui.TextBox','pyjamas.ui.MouseListener','pyjamas.ui.KeyboardListener','pyjamas.ui.Grid','pyjamas.Canvas.LinearGradientImplDefault','pyjamas.ui.ComplexPanel','pyjamas.ui.ButtonBase','ErrorMessage','pyjamas.ui.CellFormatter','pyjamas.ui.HTMLTable','pyjamas.ui.TextArea','pyjamas.ui.Focus','pyjamas.ui.FocusWidget','pyjamas.Canvas.GWTCanvasImplIEConsts','sys','pygwt','pyjamas.Canvas.GWTCanvasConsts','pyjamas.Canvas.GWTCanvasImplIE6','DataRunManager','pyjamas.Timer','binascii','SCurveRunPanel','json','pyjamas.HTTPRequest','pyjamas.ui.DisclosurePanel','pyjamas.ui.Event','pyjamas.ui.Button','OccupancyCheckPanel','pyjamas.ui.CSS','pyjamas.ui.Panel','pyjamas.Factory','pyjamas.Canvas.JSOStack','pyjamas.ui.SimplePanel','pyjamas.ui.RootPanel','pyjamas.ui.FocusListener','traceback','pyjamas.ui.PopupPanel','I2CPanel','pyjamas.ui.DockPanel','pyjamas.ui.AbsolutePanel','pyjamas.Location','pyjamas.ui.VerticalPanel','pyjamas.Canvas.ImageLoader','pyjamas.Canvas.PathElement','pyjamas.Canvas.LinearGradientImplIE6','pyjamas.ui.TextBoxBase','pyjamas','pyjamas.ui.HorizontalPanel','pyjamas.ui.RowFormatter','pyjamas.ui.CellPanel','getopt','pyjamas.ui.DragHandler','pyjamas.ui.DropHandler','pyjamas.Canvas.ColorStop','pyjamas.ui.Composite','pyjd','pyjamas.ui.FlexCellFormatter','pyjamas.ui.InnerHTML','pyjamas.Canvas.CanvasGradientImplDefault','pyjamas.Canvas','pyjamas.DOM','time','pyjamas.ui.ListBox']);
 }
 
 function pygwtOnLoad(onLoadError, name) {
