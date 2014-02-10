@@ -16232,10 +16232,19 @@ $pyjs['loaded_modules']['OccupancyCheckPanel'] = function (__mod_name__) {
 				var self = arguments[0];
 				sender = arguments[1];
 			}
-
-			if ($p['bool']($p['op_eq'](sender, self['view']['getUpdateButton']()))) {
-				self['view']['setEchoMessage']('Starting data run');
-				self['dataRunManager']['startOccupancyCheck']();
+			var $add21,$add22,$pyjs_try_err,error;
+			try {
+				if ($p['bool']($p['op_eq'](sender, self['view']['getUpdateButton']()))) {
+					self['view']['setEchoMessage']('Starting data run');
+					self['dataRunManager']['startOccupancyCheck']();
+				}
+			} catch($pyjs_try_err) {
+				var $pyjs_try_err_name = (typeof $pyjs_try_err['__name__'] == 'undefined' ? $pyjs_try_err['name'] : $pyjs_try_err['__name__'] );
+				$pyjs['__last_exception__'] = {'error': $pyjs_try_err, 'module': $m};
+				if (($pyjs_try_err_name == $p['Exception']['__name__'])||$p['_isinstance']($pyjs_try_err,$p['Exception'])) {
+					error = $pyjs_try_err;
+					$m['ErrorMessage']($p['__op_add']($add21='Exception thrown: ',$add22=$p['str'](error)));
+				} else { $pyjs['__active_exception_stack__'] = $pyjs['__last_exception_stack__']; $pyjs['__last_exception_stack__'] = null; throw $pyjs_try_err; }
 			}
 			return null;
 		}
@@ -16271,7 +16280,7 @@ $pyjs['loaded_modules']['OccupancyCheckPanel'] = function (__mod_name__) {
 				response = arguments[1];
 				request_info = arguments[2];
 			}
-			var $add21,$add22;
+			var $add24,$add23;
 			if ($p['bool']($p['op_eq']($p['getattr'](request_info, 'method'), 'getOccupancies'))) {
 				self['_onGetOccupanciesResponse'](response);
 			}
@@ -16279,7 +16288,7 @@ $pyjs['loaded_modules']['OccupancyCheckPanel'] = function (__mod_name__) {
 				self['_onConnectedCBCNamesResponse'](response);
 			}
 			else {
-				$m['ErrorMessage']($p['__op_add']($add21='Received an unexpected response for method ',$add22=$p['getattr'](request_info, 'method')));
+				$m['ErrorMessage']($p['__op_add']($add23='Received an unexpected response for method ',$add24=$p['getattr'](request_info, 'method')));
 			}
 			return null;
 		}
@@ -16294,8 +16303,8 @@ $pyjs['loaded_modules']['OccupancyCheckPanel'] = function (__mod_name__) {
 				message = arguments[2];
 				request_info = arguments[3];
 			}
-			var $add24,$add23;
-			$m['ErrorMessage']($p['__op_add']($add23='Unable to contact server: ',$add24=$p['str'](message)));
+			var $add25,$add26;
+			$m['ErrorMessage']($p['__op_add']($add25='Unable to contact server: ',$add26=$p['str'](message)));
 			return null;
 		}
 	, 1, [null,null,['self'],['code'],['message'],['request_info']]);
@@ -16315,6 +16324,7 @@ $pyjs['loaded_modules']['OccupancyCheckPanel'] = function (__mod_name__) {
 				cbcName = $iter7_nextval['$nextval'];
 				self['view']['addResult'](cbcName, response['__getitem__'](cbcName));
 			}
+			self['view']['setEchoMessage']('Results refreshed');
 			return null;
 		}
 	, 1, [null,null,['self'],['response']]);
@@ -19492,7 +19502,7 @@ $pyjs['loaded_modules']['DisplayHistogramsPanel'] = function (__mod_name__) {
 			self['mainPanel'] = $m['HorizontalPanel']();
 			self['mainPanel']['add'](controls);
 			self['mainPanel']['add']($p['getattr'](self, 'histogram'));
-			self['histogram']['setUrl']('histogramsForCBC0.png');
+			self['histogram']['setUrl']('defaultScurveHistogram.png');
 			return null;
 		}
 	, 1, [null,null,['self']]);
@@ -38684,7 +38694,10 @@ $pyjs['loaded_modules']['DataRunManager'] = function (__mod_name__) {
 			}
 			if (typeof message == 'undefined') message=arguments['callee']['__args__'][3][1];
 			var $add2,$add3,$add1,$add4;
-			if ($p['bool'](!$p['op_eq'](message, null))) {
+			if ($p['bool']($p['op_eq'](message, null))) {
+				message = '';
+			}
+			else {
 				message = $p['__op_add']($add1=' ',$add2=message);
 			}
 			$p['Exception']['__init__'](self, $p['__op_add']($add3='Data taking is already in progress',$add4=message));
@@ -38702,7 +38715,9 @@ $pyjs['loaded_modules']['DataRunManager'] = function (__mod_name__) {
 		var $method;
 		$cls_definition['__module__'] = 'DataRunManager';
 		$cls_definition['pollingTime'] = 1000;
-		$cls_definition['idlePollingTime'] = 8000;
+		$cls_definition['idlePollingTime'] = (typeof ($usub1=1)=='number'?
+			-$usub1:
+			$p['op_usub']($usub1));
 		$cls_definition['_onlyInstance'] = null;
 		$cls_definition['DataTakingStartedEvent'] = 0;
 		$cls_definition['DataTakingFinishedEvent'] = 1;
@@ -38814,7 +38829,9 @@ $pyjs['loaded_modules']['DataRunManager'] = function (__mod_name__) {
 				self['pollingTimer']['schedule']($p['getattr']($m['DataRunManager'], 'pollingTime'));
 			}
 			else {
-				self['pollingTimer']['schedule']($p['getattr']($m['DataRunManager'], 'idlePollingTime'));
+				if ($p['bool'](($p['cmp']($p['getattr'](self, 'idlePollingTime'), 0) == 1))) {
+					self['pollingTimer']['schedule']($p['getattr']($m['DataRunManager'], 'idlePollingTime'));
+				}
 			}
 			return null;
 		}
