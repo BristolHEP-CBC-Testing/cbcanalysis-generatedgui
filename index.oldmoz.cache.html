@@ -19469,6 +19469,7 @@ $pyjs['loaded_modules']['DisplayHistogramsPanel'] = function (__mod_name__) {
 	$m['Image'] = $p['___import___']('pyjamas.ui.Image.Image', null, null, false);
 	$m['HasHorizontalAlignment'] = $p['___import___']('pyjamas.ui.HasHorizontalAlignment', null, null, false);
 	$m['GlibRPCService'] = $p['___import___']('GlibRPCService.GlibRPCService', null, null, false);
+	$m['DataRunManager'] = $p['___import___']('DataRunManager.DataRunManager', null, null, false);
 	$m['ErrorMessage'] = $p['___import___']('ErrorMessage.ErrorMessage', null, null, false);
 	$m['DisplayHistogramsView'] = (function(){
 		var $cls_definition = new Object();
@@ -19645,6 +19646,7 @@ $pyjs['loaded_modules']['DisplayHistogramsPanel'] = function (__mod_name__) {
 			self['connectedCBCs'] = $p['list']([]);
 			self['rpcService']['connectedCBCNames'](null, self);
 			self['view']['getUpdateButton']()['addClickListener'](self);
+			$m['DataRunManager']['instance']()['registerEventHandler'](self);
 			return null;
 		}
 	, 1, [null,null,['self'],['inputRootFile', '/tmp/histograms.root'],['outputFile', 'scurveHistogram.png']]);
@@ -19675,6 +19677,25 @@ $pyjs['loaded_modules']['DisplayHistogramsPanel'] = function (__mod_name__) {
 		}
 	, 1, [null,null,['self'],['outputFile']]);
 		$cls_definition['setOutputFile'] = $method;
+		$method = $pyjs__bind_method2('onDataTakingEvent', function(eventCode, details) {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+				eventCode = arguments[1];
+				details = arguments[2];
+			}
+
+			if ($p['bool']($p['op_eq'](eventCode, $p['getattr']($m['DataRunManager'], 'DataTakingStartedEvent')))) {
+				self['view']['disable']();
+			}
+			else if ($p['bool']($p['op_eq'](eventCode, $p['getattr']($m['DataRunManager'], 'DataTakingFinishedEvent')))) {
+				self['view']['enable']();
+			}
+			return null;
+		}
+	, 1, [null,null,['self'],['eventCode'],['details']]);
+		$cls_definition['onDataTakingEvent'] = $method;
 		$method = $pyjs__bind_method2('onRemoteResponse', function(response, request_info) {
 			if (this['__is_instance__'] === true) {
 				var self = this;
@@ -19770,13 +19791,20 @@ $pyjs['loaded_modules']['DisplayHistogramsPanel'] = function (__mod_name__) {
 			} else {
 				var self = arguments[0];
 			}
-			var $iter5_nextval,parameters,$iter5_array,$pyjs_try_err,cbcName,selectedChannels,$iter5_idx,$iter5_type,$iter5_iter;
+			var $iter5_nextval,$iter6_idx,parameters,$iter6_type,$iter5_array,$pyjs_try_err,cbcName,$iter6_array,totalChannels,$add7,$iter5_idx,selectedChannels,$iter5_type,$add8,$iter5_iter,$iter6_iter,$iter6_nextval;
 			if ($p['bool']($p['op_eq']($p['getattr'](self, 'inputRootFile'), null))) {
 				$m['ErrorMessage']('The source root file has not been set');
 				return null;
 			}
 			selectedChannels = self['view']['getSelectedCBCChannels']();
-			if ($p['bool']($p['op_eq'](selectedChannels, $p['dict']([])))) {
+			totalChannels = 0;
+			$iter5_iter = selectedChannels['keys']();
+			$iter5_nextval=$p['__iter_prepare']($iter5_iter,false);
+			while (typeof($p['__wrapped_next']($iter5_nextval)['$nextval']) != 'undefined') {
+				cbcName = $iter5_nextval['$nextval'];
+				totalChannels = $p['__op_add']($add7=totalChannels,$add8=$p['len'](selectedChannels['__getitem__'](cbcName)));
+			}
+			if ($p['bool']($p['op_eq'](totalChannels, 0))) {
 				$m['ErrorMessage']('No channels are selected. Select some channels.');
 				return null;
 			}
@@ -19784,10 +19812,10 @@ $pyjs['loaded_modules']['DisplayHistogramsPanel'] = function (__mod_name__) {
 			parameters['__setitem__']('inputFilename', $p['getattr'](self, 'inputRootFile'));
 			parameters['__setitem__']('outputFilename', $p['getattr'](self, 'outputFile'));
 			parameters['__setitem__']('cbcChannelRange', $p['list']([]));
-			$iter5_iter = $p['getattr'](self, 'connectedCBCs');
-			$iter5_nextval=$p['__iter_prepare']($iter5_iter,false);
-			while (typeof($p['__wrapped_next']($iter5_nextval)['$nextval']) != 'undefined') {
-				cbcName = $iter5_nextval['$nextval'];
+			$iter6_iter = $p['getattr'](self, 'connectedCBCs');
+			$iter6_nextval=$p['__iter_prepare']($iter6_iter,false);
+			while (typeof($p['__wrapped_next']($iter6_nextval)['$nextval']) != 'undefined') {
+				cbcName = $iter6_nextval['$nextval'];
 				try {
 					parameters['__getitem__']('cbcChannelRange')['append'](selectedChannels['__getitem__'](cbcName));
 				} catch($pyjs_try_err) {
@@ -19828,7 +19856,7 @@ $pyjs['loaded_modules']['DisplayHistogramsPanel'] = function (__mod_name__) {
 
 
 /*
-PYJS_DEPS: ['pyjamas.ui.HorizontalPanel.HorizontalPanel', 'pyjamas', 'pyjamas.ui', 'pyjamas.ui.HorizontalPanel', 'pyjamas.ui.VerticalPanel.VerticalPanel', 'pyjamas.ui.VerticalPanel', 'pyjamas.ui.ListBox.ListBox', 'pyjamas.ui.ListBox', 'pyjamas.ui.Button.Button', 'pyjamas.ui.Button', 'pyjamas.ui.Image.Image', 'pyjamas.ui.Image', 'pyjamas.ui.HasHorizontalAlignment', 'GlibRPCService.GlibRPCService', 'GlibRPCService', 'ErrorMessage.ErrorMessage', 'ErrorMessage']
+PYJS_DEPS: ['pyjamas.ui.HorizontalPanel.HorizontalPanel', 'pyjamas', 'pyjamas.ui', 'pyjamas.ui.HorizontalPanel', 'pyjamas.ui.VerticalPanel.VerticalPanel', 'pyjamas.ui.VerticalPanel', 'pyjamas.ui.ListBox.ListBox', 'pyjamas.ui.ListBox', 'pyjamas.ui.Button.Button', 'pyjamas.ui.Button', 'pyjamas.ui.Image.Image', 'pyjamas.ui.Image', 'pyjamas.ui.HasHorizontalAlignment', 'GlibRPCService.GlibRPCService', 'GlibRPCService', 'DataRunManager.DataRunManager', 'DataRunManager', 'ErrorMessage.ErrorMessage', 'ErrorMessage']
 */
 
 --></script>
@@ -22126,6 +22154,7 @@ $pyjs['loaded_modules']['index'] = function (__mod_name__) {
 	$m['I2CPanel'] = $p['___import___']('I2CPanel.I2CPanel', null, null, false);
 	$m['OccupancyCheckPanel'] = $p['___import___']('OccupancyCheckPanel.OccupancyCheckPanel', null, null, false);
 	$m['SCurveRunPanel'] = $p['___import___']('SCurveRunPanel.SCurveRunPanel', null, null, false);
+	$m['CalibrateChannelTrimsPanel'] = $p['___import___']('CalibrateChannelTrimsPanel.CalibrateChannelTrimsPanel', null, null, false);
 	$m['DataRunManager'] = $p['___import___']('DataRunManager.DataRunManager', null, null, false);
 	$m['ErrorMessage'] = $p['___import___']('ErrorMessage.ErrorMessage', null, null, false);
 	$m['Client'] = (function(){
@@ -22146,6 +22175,7 @@ $pyjs['loaded_modules']['index'] = function (__mod_name__) {
 			self['I2CPanel'] = $m['I2CPanel']();
 			self['SCurveRunPanel'] = $m['SCurveRunPanel']();
 			self['OccupancyCheckPanel'] = $m['OccupancyCheckPanel']();
+			self['CalibrateChannelTrimsPanel'] = $m['CalibrateChannelTrimsPanel']();
 			self['mainPanel'] = $m['DockPanel']();
 			titleBar = $m['HorizontalPanel']();
 			titleBar['add']($pyjs_kwargs_call(null, $m['HTML'], null, null, [{'StyleName':'titleStyle'}, 'CBC Test Stand (v1.1)']));
@@ -22169,12 +22199,15 @@ $pyjs['loaded_modules']['index'] = function (__mod_name__) {
 			self['registersButton'] = $pyjs_kwargs_call(null, $m['Label'], null, null, [{'StyleName':'areaStyle'}, 'I2C Registers']);
 			self['occupanciesButton'] = $pyjs_kwargs_call(null, $m['Label'], null, null, [{'StyleName':'areaStyle'}, 'Test Occupancies']);
 			self['scurveButton'] = $pyjs_kwargs_call(null, $m['Label'], null, null, [{'StyleName':'areaStyle'}, 'S-Curve Run']);
+			self['calibrateTrimsButton'] = $pyjs_kwargs_call(null, $m['Label'], null, null, [{'StyleName':'areaStyle'}, 'Calibrate Trims']);
 			self['registersButton']['addClickListener'](self);
-			self['scurveButton']['addClickListener'](self);
 			self['occupanciesButton']['addClickListener'](self);
+			self['scurveButton']['addClickListener'](self);
+			self['calibrateTrimsButton']['addClickListener'](self);
 			selectionPanel['add']($p['getattr'](self, 'registersButton'));
 			selectionPanel['add']($p['getattr'](self, 'occupanciesButton'));
 			selectionPanel['add']($p['getattr'](self, 'scurveButton'));
+			selectionPanel['add']($p['getattr'](self, 'calibrateTrimsButton'));
 			self['mainPanel']['add'](selectionPanel, $p['getattr']($m['DockPanel'], 'WEST'));
 			self['mainPanel']['add']($p['getattr'](self, 'status'), $p['getattr']($m['DockPanel'], 'SOUTH'));
 			$m['RootPanel']()['add']($p['getattr'](self, 'mainPanel'));
@@ -22268,6 +22301,9 @@ $pyjs['loaded_modules']['index'] = function (__mod_name__) {
 			else if ($p['bool']($p['op_eq'](panelButton, $p['getattr'](self, 'occupanciesButton')))) {
 				self['activePanel'] = $p['getattr'](self, 'OccupancyCheckPanel');
 			}
+			else if ($p['bool']($p['op_eq'](panelButton, $p['getattr'](self, 'calibrateTrimsButton')))) {
+				self['activePanel'] = $p['getattr'](self, 'CalibrateChannelTrimsPanel');
+			}
 			self['activePanel']['getPanel']()['setStyleName']('selectedAreaStyle');
 			self['activePanel']['getPanel']()['setWidth']('100%');
 			self['mainPanel']['add'](self['activePanel']['getPanel'](), $p['getattr']($m['DockPanel'], 'CENTER'));
@@ -22321,7 +22357,7 @@ $pyjs['loaded_modules']['index'] = function (__mod_name__) {
 
 
 /*
-PYJS_DEPS: ['pyjamas.Window', 'pyjamas', 'pyjamas.ui.RootPanel.RootPanel', 'pyjamas.ui', 'pyjamas.ui.RootPanel', 'pyjamas.ui.DockPanel.DockPanel', 'pyjamas.ui.DockPanel', 'pyjamas.ui.DisclosurePanel.DisclosurePanel', 'pyjamas.ui.DisclosurePanel', 'pyjamas.ui.TextArea.TextArea', 'pyjamas.ui.TextArea', 'pyjamas.ui.Label.Label', 'pyjamas.ui.Label', 'pyjamas.ui.Button.Button', 'pyjamas.ui.Button', 'pyjamas.ui.HTML.HTML', 'pyjamas.ui.HTML', 'pyjamas.ui.VerticalPanel.VerticalPanel', 'pyjamas.ui.VerticalPanel', 'pyjamas.ui.HorizontalPanel.HorizontalPanel', 'pyjamas.ui.HorizontalPanel', 'pyjamas.ui.FlowPanel.FlowPanel', 'pyjamas.ui.FlowPanel', 'pyjamas.ui.ListBox.ListBox', 'pyjamas.ui.ListBox', 'pyjamas.ui.TextBox.TextBox', 'pyjamas.ui.TextBox', 'pyjamas.JSONService.JSONProxy', 'pyjamas.JSONService', 'pyjamas.ui.CSS.StyleSheetCssFile', 'pyjamas.ui.CSS', 'pyjamas.ui.DialogBox.DialogBox', 'pyjamas.ui.DialogBox', 'pyjamas.ui.HasHorizontalAlignment', 'I2CPanel.I2CPanel', 'I2CPanel', 'OccupancyCheckPanel.OccupancyCheckPanel', 'OccupancyCheckPanel', 'SCurveRunPanel.SCurveRunPanel', 'SCurveRunPanel', 'DataRunManager.DataRunManager', 'DataRunManager', 'ErrorMessage.ErrorMessage', 'ErrorMessage']
+PYJS_DEPS: ['pyjamas.Window', 'pyjamas', 'pyjamas.ui.RootPanel.RootPanel', 'pyjamas.ui', 'pyjamas.ui.RootPanel', 'pyjamas.ui.DockPanel.DockPanel', 'pyjamas.ui.DockPanel', 'pyjamas.ui.DisclosurePanel.DisclosurePanel', 'pyjamas.ui.DisclosurePanel', 'pyjamas.ui.TextArea.TextArea', 'pyjamas.ui.TextArea', 'pyjamas.ui.Label.Label', 'pyjamas.ui.Label', 'pyjamas.ui.Button.Button', 'pyjamas.ui.Button', 'pyjamas.ui.HTML.HTML', 'pyjamas.ui.HTML', 'pyjamas.ui.VerticalPanel.VerticalPanel', 'pyjamas.ui.VerticalPanel', 'pyjamas.ui.HorizontalPanel.HorizontalPanel', 'pyjamas.ui.HorizontalPanel', 'pyjamas.ui.FlowPanel.FlowPanel', 'pyjamas.ui.FlowPanel', 'pyjamas.ui.ListBox.ListBox', 'pyjamas.ui.ListBox', 'pyjamas.ui.TextBox.TextBox', 'pyjamas.ui.TextBox', 'pyjamas.JSONService.JSONProxy', 'pyjamas.JSONService', 'pyjamas.ui.CSS.StyleSheetCssFile', 'pyjamas.ui.CSS', 'pyjamas.ui.DialogBox.DialogBox', 'pyjamas.ui.DialogBox', 'pyjamas.ui.HasHorizontalAlignment', 'I2CPanel.I2CPanel', 'I2CPanel', 'OccupancyCheckPanel.OccupancyCheckPanel', 'OccupancyCheckPanel', 'SCurveRunPanel.SCurveRunPanel', 'SCurveRunPanel', 'CalibrateChannelTrimsPanel.CalibrateChannelTrimsPanel', 'CalibrateChannelTrimsPanel', 'DataRunManager.DataRunManager', 'DataRunManager', 'ErrorMessage.ErrorMessage', 'ErrorMessage']
 */
 
 --></script>
@@ -27939,6 +27975,235 @@ $pyjs['loaded_modules']['pyjamas.ui.CSS'] = function (__mod_name__) {
 
 /*
 PYJS_DEPS: ['pyjamas.DOM', 'pyjamas']
+*/
+
+--></script>
+<script type="text/javascript"><!--
+/* start module: CalibrateChannelTrimsPanel */
+$pyjs['loaded_modules']['CalibrateChannelTrimsPanel'] = function (__mod_name__) {
+	if($pyjs['loaded_modules']['CalibrateChannelTrimsPanel']['__was_initialized__']) return $pyjs['loaded_modules']['CalibrateChannelTrimsPanel'];
+	var $m = $pyjs['loaded_modules']['CalibrateChannelTrimsPanel'];
+	$m['__repr__'] = function() { return '<module: CalibrateChannelTrimsPanel>'; };
+	$m['__was_initialized__'] = true;
+	if ((__mod_name__ === null) || (typeof __mod_name__ == 'undefined')) __mod_name__ = 'CalibrateChannelTrimsPanel';
+	$m['__name__'] = __mod_name__;
+
+
+	$m['HorizontalPanel'] = $p['___import___']('pyjamas.ui.HorizontalPanel.HorizontalPanel', null, null, false);
+	$m['VerticalPanel'] = $p['___import___']('pyjamas.ui.VerticalPanel.VerticalPanel', null, null, false);
+	$m['TextBox'] = $p['___import___']('pyjamas.ui.TextBox.TextBox', null, null, false);
+	$m['Button'] = $p['___import___']('pyjamas.ui.Button.Button', null, null, false);
+	$m['HTML'] = $p['___import___']('pyjamas.ui.HTML.HTML', null, null, false);
+	$m['HasHorizontalAlignment'] = $p['___import___']('pyjamas.ui.HasHorizontalAlignment', null, null, false);
+	$m['ErrorMessage'] = $p['___import___']('ErrorMessage.ErrorMessage', null, null, false);
+	$m['DataRunManager'] = $p['___import___']('DataRunManager.DataRunManager', null, null, false);
+	$m['CalibrateChannelTrimsView'] = (function(){
+		var $cls_definition = new Object();
+		var $method;
+		$cls_definition['__module__'] = 'CalibrateChannelTrimsPanel';
+		$method = $pyjs__bind_method2('__init__', function() {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+			}
+			var numberOfLoopsPanel,aimPointPanel;
+			numberOfLoopsPanel = $m['HorizontalPanel']();
+			numberOfLoopsPanel['add']($m['HTML']('Maximum number of loops'));
+			self['maximumNumberOfLoops'] = $m['TextBox']();
+			self['maximumNumberOfLoops']['setText'](10);
+			numberOfLoopsPanel['add']($p['getattr'](self, 'maximumNumberOfLoops'));
+			numberOfLoopsPanel['setCellHorizontalAlignment']($p['getattr'](self, 'maximumNumberOfLoops'), $p['getattr']($m['HasHorizontalAlignment'], 'ALIGN_RIGHT'));
+			numberOfLoopsPanel['setWidth']('100%');
+			aimPointPanel = $m['HorizontalPanel']();
+			aimPointPanel['add']($m['HTML']('Aim point'));
+			self['aimPoint'] = $m['TextBox']();
+			self['aimPoint']['setText'](127);
+			aimPointPanel['add']($p['getattr'](self, 'aimPoint'));
+			aimPointPanel['setCellHorizontalAlignment']($p['getattr'](self, 'aimPoint'), $p['getattr']($m['HasHorizontalAlignment'], 'ALIGN_RIGHT'));
+			aimPointPanel['setWidth']('100%');
+			self['start'] = $m['Button']('Start');
+			self['echo'] = $m['HTML']('Initiating...');
+			self['mainPanel'] = $m['VerticalPanel']();
+			self['mainPanel']['add'](numberOfLoopsPanel);
+			self['mainPanel']['add'](aimPointPanel);
+			self['mainPanel']['add']($p['getattr'](self, 'start'));
+			self['mainPanel']['add']($p['getattr'](self, 'echo'));
+			return null;
+		}
+	, 1, [null,null,['self']]);
+		$cls_definition['__init__'] = $method;
+		$method = $pyjs__bind_method2('getMaxNumberOfLoops', function() {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+			}
+
+			return self['maximumNumberOfLoops']['getText']();
+		}
+	, 1, [null,null,['self']]);
+		$cls_definition['getMaxNumberOfLoops'] = $method;
+		$method = $pyjs__bind_method2('getAimPoint', function() {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+			}
+
+			return self['aimPoint']['getText']();
+		}
+	, 1, [null,null,['self']]);
+		$cls_definition['getAimPoint'] = $method;
+		$method = $pyjs__bind_method2('getStartButton', function() {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+			}
+
+			return $p['getattr'](self, 'start');
+		}
+	, 1, [null,null,['self']]);
+		$cls_definition['getStartButton'] = $method;
+		$method = $pyjs__bind_method2('setEchoText', function(text) {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+				text = arguments[1];
+			}
+
+			self['echo']['setText'](text);
+			return null;
+		}
+	, 1, [null,null,['self'],['text']]);
+		$cls_definition['setEchoText'] = $method;
+		$method = $pyjs__bind_method2('enable', function() {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+			}
+
+			self['start']['setEnabled'](true);
+			return null;
+		}
+	, 1, [null,null,['self']]);
+		$cls_definition['enable'] = $method;
+		$method = $pyjs__bind_method2('disable', function() {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+			}
+
+			self['start']['setEnabled'](false);
+			return null;
+		}
+	, 1, [null,null,['self']]);
+		$cls_definition['disable'] = $method;
+		$method = $pyjs__bind_method2('getPanel', function() {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+			}
+
+			return $p['getattr'](self, 'mainPanel');
+		}
+	, 1, [null,null,['self']]);
+		$cls_definition['getPanel'] = $method;
+		var $bases = new Array($p['object']);
+		var $data = $p['dict']();
+		for (var $item in $cls_definition) { $data['__setitem__']($item, $cls_definition[$item]); }
+		return $p['_create_class']('CalibrateChannelTrimsView', $p['tuple']($bases), $data);
+	})();
+	$m['CalibrateChannelTrimsPanel'] = (function(){
+		var $cls_definition = new Object();
+		var $method;
+		$cls_definition['__module__'] = 'CalibrateChannelTrimsPanel';
+		$method = $pyjs__bind_method2('__init__', function() {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+			}
+
+			self['view'] = $m['CalibrateChannelTrimsView']();
+			self['view']['getStartButton']()['addClickListener'](self);
+			self['dataRunManager'] = $m['DataRunManager']['instance']();
+			self['dataRunManager']['registerEventHandler'](self);
+			return null;
+		}
+	, 1, [null,null,['self']]);
+		$cls_definition['__init__'] = $method;
+		$method = $pyjs__bind_method2('onDataTakingEvent', function(eventCode, details) {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+				eventCode = arguments[1];
+				details = arguments[2];
+			}
+			var $add2,$add3,$add1,$add4,$mul2,$mul1;
+			if ($p['bool']($p['op_eq'](eventCode, $p['getattr']($m['DataRunManager'], 'DataTakingStartedEvent')))) {
+				self['view']['setEchoText']('Taking data... ');
+				self['view']['disable']();
+			}
+			else if ($p['bool']($p['op_eq'](eventCode, $p['getattr']($m['DataRunManager'], 'DataTakingFinishedEvent')))) {
+				self['view']['setEchoText']('Data taking finished');
+				self['view']['enable']();
+			}
+			else if ($p['bool']($p['op_eq'](eventCode, $p['getattr']($m['DataRunManager'], 'DataTakingStatusEvent')))) {
+				self['view']['setEchoText']($p['__op_add']($add3=$p['sprintf']('%3d%% - ', $p['float_int']($p['__op_add']($add1=(typeof ($mul1=details['__getitem__']('fractionComplete'))==typeof ($mul2=100) && typeof $mul1=='number'?
+					$mul1*$mul2:
+					$p['op_mul']($mul1,$mul2)),$add2=0.5))),$add4=details['__getitem__']('statusString')));
+			}
+			return null;
+		}
+	, 1, [null,null,['self'],['eventCode'],['details']]);
+		$cls_definition['onDataTakingEvent'] = $method;
+		$method = $pyjs__bind_method2('onClick', function(sender) {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+				sender = arguments[1];
+			}
+
+			if ($p['bool']($p['op_eq'](sender, self['view']['getStartButton']()))) {
+				$m['ErrorMessage']("I haven't coded this up yet. The python script<br>runcontrol/cbc2CalibrateChannelTrims.py works.");
+			}
+			return null;
+		}
+	, 1, [null,null,['self'],['sender']]);
+		$cls_definition['onClick'] = $method;
+		$method = $pyjs__bind_method2('getPanel', function() {
+			if (this['__is_instance__'] === true) {
+				var self = this;
+			} else {
+				var self = arguments[0];
+			}
+
+			return self['view']['getPanel']();
+		}
+	, 1, [null,null,['self']]);
+		$cls_definition['getPanel'] = $method;
+		var $bases = new Array($p['object']);
+		var $data = $p['dict']();
+		for (var $item in $cls_definition) { $data['__setitem__']($item, $cls_definition[$item]); }
+		return $p['_create_class']('CalibrateChannelTrimsPanel', $p['tuple']($bases), $data);
+	})();
+	return this;
+}; /* end CalibrateChannelTrimsPanel */
+
+
+/* end module: CalibrateChannelTrimsPanel */
+
+
+/*
+PYJS_DEPS: ['pyjamas.ui.HorizontalPanel.HorizontalPanel', 'pyjamas', 'pyjamas.ui', 'pyjamas.ui.HorizontalPanel', 'pyjamas.ui.VerticalPanel.VerticalPanel', 'pyjamas.ui.VerticalPanel', 'pyjamas.ui.TextBox.TextBox', 'pyjamas.ui.TextBox', 'pyjamas.ui.Button.Button', 'pyjamas.ui.Button', 'pyjamas.ui.HTML.HTML', 'pyjamas.ui.HTML', 'pyjamas.ui.HasHorizontalAlignment', 'ErrorMessage.ErrorMessage', 'ErrorMessage', 'DataRunManager.DataRunManager', 'DataRunManager']
 */
 
 --></script>
@@ -34046,7 +34311,7 @@ $pyjs['loaded_modules']['GlibRPCService'] = function (__mod_name__) {
 			if ($p['bool'](!$p['op_eq']($p['getattr']($m['GlibRPCService'], '_onlyInstance'), null))) {
 				throw ($p['Exception']("GlibRPCService is a singleton class. Call 'GlibRPCService.instance()' to get the only running instance"));
 			}
-			$m['JSONProxy']['__init__'](self, 'services/GlibControlProxy.py', $p['list'](['getStates', 'connectedCBCNames', 'I2CRegisterValues', 'setI2CRegisterValues', 'saveStateValues', 'loadStateValues', 'startProcesses', 'killProcesses', 'boardIsReachable', 'stopTakingData', 'startSCurveRun', 'startOccupancyCheck', 'getDataTakingStatus', 'getOccupancies', 'createHistogram']));
+			$m['JSONProxy']['__init__'](self, 'services/GlibControlProxy.py', $p['list'](['getStates', 'connectedCBCNames', 'I2CRegisterValues', 'setI2CRegisterValues', 'saveStateValues', 'loadStateValues', 'startProcesses', 'killProcesses', 'boardIsReachable', 'stopTakingData', 'startSCurveRun', 'startOccupancyCheck', 'getDataTakingStatus', 'getOccupancies', 'createHistogram', 'saveHistograms']));
 			return null;
 		}
 	, 1, [null,null,['self']]);
@@ -36462,8 +36727,59 @@ $pyjs['loaded_modules']['SCurveRunPanel'] = function (__mod_name__) {
 					response = arguments[1];
 					request_info = arguments[2];
 				}
+
+ 				return null;
+			}
+	, 1, [null,null,['self'],['response'],['request_info']]);
+			$cls_definition['onRemoteResponse'] = $method;
+			$method = $pyjs__bind_method2('onRemoteError', function(code, message, request_info) {
+				if (this['__is_instance__'] === true) {
+					var self = this;
+				} else {
+					var self = arguments[0];
+					code = arguments[1];
+					message = arguments[2];
+					request_info = arguments[3];
+				}
 				var $add2,$add1;
-				$m['ErrorMessage']($p['__op_add']($add1='Unable to contact server: ',$add2=$p['str'](response)));
+				$m['ErrorMessage']($p['__op_add']($add1='Unable to contact server: ',$add2=$p['str'](message)));
+				return null;
+			}
+	, 1, [null,null,['self'],['code'],['message'],['request_info']]);
+			$cls_definition['onRemoteError'] = $method;
+			var $bases = new Array(pyjslib['object']);
+			var $data = $p['dict']();
+			for (var $item in $cls_definition) { $data['__setitem__']($item, $cls_definition[$item]); }
+			return $p['_create_class']('DoNothingListener', $p['tuple']($bases), $data);
+		})();
+		$cls_definition['SaveHistogramsListener'] = (function(){
+			var $cls_definition = new Object();
+			var $method;
+			$cls_definition['__module__'] = 'SCurveRunPanel';
+			$method = $pyjs__bind_method2('__init__', function(buttonToEnable) {
+				if (this['__is_instance__'] === true) {
+					var self = this;
+				} else {
+					var self = arguments[0];
+					buttonToEnable = arguments[1];
+				}
+
+				self['buttonToEnable'] = buttonToEnable;
+				return null;
+			}
+	, 1, [null,null,['self'],['buttonToEnable']]);
+			$cls_definition['__init__'] = $method;
+			$method = $pyjs__bind_method2('onRemoteResponse', function(response, request_info) {
+				if (this['__is_instance__'] === true) {
+					var self = this;
+				} else {
+					var self = arguments[0];
+					response = arguments[1];
+					request_info = arguments[2];
+				}
+
+				self['buttonToEnable']['setEnabled'](true);
+				$pyjs_kwargs_call(null, $m['ErrorMessage'], null, null, [{'messageTitle':'Message'}, 'Histograms saved']);
 				return null;
 			}
 	, 1, [null,null,['self'],['response'],['request_info']]);
@@ -36478,6 +36794,7 @@ $pyjs['loaded_modules']['SCurveRunPanel'] = function (__mod_name__) {
 					request_info = arguments[3];
 				}
 				var $add3,$add4;
+				self['buttonToEnable']['setEnabled'](true);
 				$m['ErrorMessage']($p['__op_add']($add3='Unable to contact server: ',$add4=$p['str'](message)));
 				return null;
 			}
@@ -36486,7 +36803,7 @@ $pyjs['loaded_modules']['SCurveRunPanel'] = function (__mod_name__) {
 			var $bases = new Array(pyjslib['object']);
 			var $data = $p['dict']();
 			for (var $item in $cls_definition) { $data['__setitem__']($item, $cls_definition[$item]); }
-			return $p['_create_class']('DoNothingListener', $p['tuple']($bases), $data);
+			return $p['_create_class']('SaveHistogramsListener', $p['tuple']($bases), $data);
 		})();
 		$cls_definition['DataTakingStatusListener'] = (function(){
 			var $cls_definition = new Object();
@@ -36552,7 +36869,7 @@ $pyjs['loaded_modules']['SCurveRunPanel'] = function (__mod_name__) {
 			} else {
 				var self = arguments[0];
 			}
-			var histogramDisplay;
+			var histogramDisplay,saveHistogramsPanel;
 			self['rpcService'] = $m['GlibRPCService']['instance']();
 			self['dataRunManager'] = $m['DataRunManager']['instance']();
 			self['mainPanel'] = $m['VerticalPanel']();
@@ -36561,15 +36878,26 @@ $pyjs['loaded_modules']['SCurveRunPanel'] = function (__mod_name__) {
 			self['mainSettings'] = $m['VerticalPanel']('Control Settings');
 			self['startButton'] = $m['VerticalPanel']('Run Button');
 			self['canvasPanel'] = $m['VerticalPanel']('Canvas');
-			self['mainSettings']['add'](self['createControlPanel']($p['list'](['RangeLo', 'RangeHi', 'Steps', 'FileName'])));
+			self['mainSettings']['add'](self['createControlPanel']($p['list'](['RangeLo', 'RangeHi', 'Steps'])));
 			self['echo'] = $m['Label']();
 			self['launchButton'] = $m['Button']('Launch Now');
 			self['launchButton']['addClickListener'](self);
 			self['launchButton']['setEnabled'](true);
+			saveHistogramsPanel = $m['HorizontalPanel']();
+			self['saveHistogramsButton'] = $m['Button']('Save histograms');
+			self['saveHistogramsButton']['setEnabled'](false);
+			self['saveHistogramsButton']['addClickListener'](self);
+			self['saveHistogramsFilename'] = $m['TextBox']('Filename');
+			self['saveHistogramsFilename']['setText']('/tmp/scurveHistograms.root');
+			self['saveHistogramsFilename']['setVisibleLength'](50);
+			saveHistogramsPanel['add']($p['getattr'](self, 'saveHistogramsButton'));
+			saveHistogramsPanel['add']($p['getattr'](self, 'saveHistogramsFilename'));
 			self['mainPanel']['add']($p['getattr'](self, 'mainSettings'));
 			self['mainPanel']['add']($p['getattr'](self, 'startButton'));
 			self['mainPanel']['add']($p['getattr'](self, 'launchButton'));
 			self['mainPanel']['add']($p['getattr'](self, 'echo'));
+			self['mainPanel']['add'](saveHistogramsPanel);
+			self['mainPanel']['add']($m['Label']('Note that the histograms are fitted before saving, so this can take a non-negligible amount of time'));
 			histogramDisplay = $m['DisplayHistogramsPanel']();
 			self['mainPanel']['add']($m['HTML']('<br><b>Results:</b> (note that selecting a lot of channels can take a very long time)'));
 			self['mainPanel']['add'](histogramDisplay['getPanel']());
@@ -36594,6 +36922,7 @@ $pyjs['loaded_modules']['SCurveRunPanel'] = function (__mod_name__) {
 			else if ($p['bool']($p['op_eq'](eventCode, $p['getattr']($m['DataRunManager'], 'DataTakingFinishedEvent')))) {
 				self['echo']['setText']('Data taking finished');
 				self['launchButton']['setEnabled'](true);
+				self['saveHistogramsButton']['setEnabled'](true);
 			}
 			else if ($p['bool']($p['op_eq'](eventCode, $p['getattr']($m['DataRunManager'], 'DataTakingStatusEvent')))) {
 				self['echo']['setText']($p['__op_add']($add9=$p['sprintf']('%3d%% - ', $p['float_int']($p['__op_add']($add7=(typeof ($mul1=details['__getitem__']('fractionComplete'))==typeof ($mul2=100) && typeof $mul1=='number'?
@@ -36631,6 +36960,10 @@ $pyjs['loaded_modules']['SCurveRunPanel'] = function (__mod_name__) {
 				rangeLow = $p['float_int'](self['rangeLowBox']['getText']());
 				stepSize = $p['float_int'](self['stepSizeBox']['getText']());
 				self['dataRunManager']['startSCurveRun']($p['range'](rangeLow, rangeHigh, stepSize));
+			}
+			if ($p['bool']($p['op_eq'](sender, $p['getattr'](self, 'saveHistogramsButton')))) {
+				self['saveHistogramsButton']['setEnabled'](false);
+				self['rpcService']['saveHistograms'](self['saveHistogramsFilename']['getText'](), $m['SCurveRunPanel']['SaveHistogramsListener']($p['getattr'](self, 'saveHistogramsButton')));
 			}
 			return null;
 		}
@@ -38715,9 +39048,7 @@ $pyjs['loaded_modules']['DataRunManager'] = function (__mod_name__) {
 		var $method;
 		$cls_definition['__module__'] = 'DataRunManager';
 		$cls_definition['pollingTime'] = 1000;
-		$cls_definition['idlePollingTime'] = (typeof ($usub1=1)=='number'?
-			-$usub1:
-			$p['op_usub']($usub1));
+		$cls_definition['idlePollingTime'] = 4000;
 		$cls_definition['_onlyInstance'] = null;
 		$cls_definition['DataTakingStartedEvent'] = 0;
 		$cls_definition['DataTakingFinishedEvent'] = 1;
@@ -38745,7 +39076,8 @@ $pyjs['loaded_modules']['DataRunManager'] = function (__mod_name__) {
 			self['pollingTimer'] = $pyjs_kwargs_call(null, $m['Timer'], null, null, [{'notify':$p['getattr'](self, 'pollRPCService')}]);
 			self['eventHandlers'] = $p['list']([]);
 			self['fractionComplete'] = 1;
-			self['statusString'] = 'Uninitialised';
+			self['statusString'] = 'Not taking data';
+			self['firstRun'] = true;
 			self['pollRPCService']();
 			return null;
 		}
@@ -38800,13 +39132,22 @@ $pyjs['loaded_modules']['DataRunManager'] = function (__mod_name__) {
 				var self = arguments[0];
 				response = arguments[1];
 			}
-			var $iter1_array,$or1,statusHasChanged,eventCode,$or2,newStatus,$iter1_iter,handler,details,newFraction,$iter1_nextval,$iter1_idx,$iter1_type;
+			var $iter1_idx,$iter2_nextval,$or1,statusHasChanged,eventCode,$or2,newStatus,$iter1_iter,$iter2_type,$iter2_iter,$iter2_idx,handler,$iter1_array,newFraction,$iter1_nextval,details,$iter2_array,$iter1_type;
 			newFraction = response['__getitem__']('fractionComplete');
 			newStatus = response['__getitem__']('statusString');
 			statusHasChanged = false;
 			if ($p['bool'](($p['bool']($or1=!$p['op_eq']($p['getattr'](self, 'fractionComplete'), newFraction))?$or1:!$p['op_eq']($p['getattr'](self, 'statusString'), newStatus)))) {
 				statusHasChanged = true;
+				if ($p['bool']($p['getattr'](self, 'firstRun'))) {
+					$iter1_iter = $p['getattr'](self, 'eventHandlers');
+					$iter1_nextval=$p['__iter_prepare']($iter1_iter,false);
+					while (typeof($p['__wrapped_next']($iter1_nextval)['$nextval']) != 'undefined') {
+						handler = $iter1_nextval['$nextval'];
+						handler['onDataTakingEvent']($p['getattr']($m['DataRunManager'], 'DataTakingStartedEvent'), null);
+					}
+				}
 			}
+			self['firstRun'] = false;
 			self['fractionComplete'] = newFraction;
 			self['statusString'] = newStatus;
 			if ($p['bool'](statusHasChanged)) {
@@ -38818,10 +39159,10 @@ $pyjs['loaded_modules']['DataRunManager'] = function (__mod_name__) {
 					eventCode = $p['getattr']($m['DataRunManager'], 'DataTakingStatusEvent');
 					details = $p['dict']([['fractionComplete', $p['getattr'](self, 'fractionComplete')], ['statusString', $p['getattr'](self, 'statusString')]]);
 				}
-				$iter1_iter = $p['getattr'](self, 'eventHandlers');
-				$iter1_nextval=$p['__iter_prepare']($iter1_iter,false);
-				while (typeof($p['__wrapped_next']($iter1_nextval)['$nextval']) != 'undefined') {
-					handler = $iter1_nextval['$nextval'];
+				$iter2_iter = $p['getattr'](self, 'eventHandlers');
+				$iter2_nextval=$p['__iter_prepare']($iter2_iter,false);
+				while (typeof($p['__wrapped_next']($iter2_nextval)['$nextval']) != 'undefined') {
+					handler = $iter2_nextval['$nextval'];
 					handler['onDataTakingEvent'](eventCode, details);
 				}
 			}
@@ -38844,13 +39185,13 @@ $pyjs['loaded_modules']['DataRunManager'] = function (__mod_name__) {
 				var self = arguments[0];
 				reponse = arguments[1];
 			}
-			var $iter2_nextval,$iter2_type,$iter2_iter,$iter2_idx,handler,$iter2_array;
+			var $iter3_idx,$iter3_type,handler,$iter3_iter,$iter3_array,$iter3_nextval;
 			self['statusString'] = 'S-curve run started';
 			self['pollingTimer']['schedule']($p['getattr']($m['DataRunManager'], 'pollingTime'));
-			$iter2_iter = $p['getattr'](self, 'eventHandlers');
-			$iter2_nextval=$p['__iter_prepare']($iter2_iter,false);
-			while (typeof($p['__wrapped_next']($iter2_nextval)['$nextval']) != 'undefined') {
-				handler = $iter2_nextval['$nextval'];
+			$iter3_iter = $p['getattr'](self, 'eventHandlers');
+			$iter3_nextval=$p['__iter_prepare']($iter3_iter,false);
+			while (typeof($p['__wrapped_next']($iter3_nextval)['$nextval']) != 'undefined') {
+				handler = $iter3_nextval['$nextval'];
 				handler['onDataTakingEvent']($p['getattr']($m['DataRunManager'], 'DataTakingStartedEvent'), null);
 			}
 			return null;
@@ -38864,13 +39205,13 @@ $pyjs['loaded_modules']['DataRunManager'] = function (__mod_name__) {
 				var self = arguments[0];
 				reponse = arguments[1];
 			}
-			var $iter3_idx,$iter3_type,handler,$iter3_iter,$iter3_array,$iter3_nextval;
+			var $iter4_nextval,$iter4_idx,handler,$iter4_type,$iter4_array,$iter4_iter;
 			self['statusString'] = 'Occupancy check started';
 			self['pollingTimer']['schedule']($p['getattr']($m['DataRunManager'], 'pollingTime'));
-			$iter3_iter = $p['getattr'](self, 'eventHandlers');
-			$iter3_nextval=$p['__iter_prepare']($iter3_iter,false);
-			while (typeof($p['__wrapped_next']($iter3_nextval)['$nextval']) != 'undefined') {
-				handler = $iter3_nextval['$nextval'];
+			$iter4_iter = $p['getattr'](self, 'eventHandlers');
+			$iter4_nextval=$p['__iter_prepare']($iter4_iter,false);
+			while (typeof($p['__wrapped_next']($iter4_nextval)['$nextval']) != 'undefined') {
+				handler = $iter4_nextval['$nextval'];
 				handler['onDataTakingEvent']($p['getattr']($m['DataRunManager'], 'DataTakingStartedEvent'), null);
 			}
 			return null;
@@ -41754,7 +42095,7 @@ function prepare_app() {
         };
         wait();
     }
-    wait_for_loading_modules(app_imported, ['pyjamas.ui','pyjamas.ui.GlassWidget','pyjamas.ui.InnerText','pyjamas.ui.ClickListener','pyjamas.ui.DialogBox','pyjamas.JSONService','pyjamas.Canvas.RadialGradientImplDefault','pyjamas.Canvas.GWTCanvas','struct','pyjamas.ui.CheckBox','base64','pyjamas.ui.Label','pyjamas.ui.FlexTable','pyjamas.ui.ComplexPanel','pyjamas.Canvas.VMLContext','datetime','pyjamas.ui.Image','pyjamas.Window','pyjslib','pyjamas.Canvas.GWTCanvasImplDefault','pyjamas.ui.InputListener','GlibRPCService','pyjamas.Canvas.CanvasGradientImplIE6','pyjamas.Canvas.Color','math','pyjamas.EventController','pyjamas.ui.HTML','pyjamas.ui.UIObject','pyjamas.ui.FlowPanel','pyjamas.ui.Widget','pyjamas.ui.ChangeListener','pyjamas.Canvas.RadialGradientImplIE6','index','pyjamas.ui.TextBox','pyjamas.ui.MouseListener','pyjamas.ui.KeyboardListener','pyjamas.ui.Grid','pyjamas.Canvas.LinearGradientImplDefault','sys','pyjamas.ui.ButtonBase','DisplayHistogramsPanel','ErrorMessage','pyjamas.ui.CellFormatter','pyjamas.ui.HTMLTable','pyjamas.ui.TextArea','pyjamas.ui.Focus','pyjamas.ui.FocusWidget','pyjamas.Canvas.GWTCanvasImplIEConsts','pygwt','pyjamas.Canvas.GWTCanvasConsts','pyjamas.Canvas.GWTCanvasImplIE6','DataRunManager','pyjamas.Timer','binascii','SCurveRunPanel','json','pyjamas.HTTPRequest','pyjamas.ui.DisclosurePanel','pyjamas.ui.Event','pyjamas.ui.Button','OccupancyCheckPanel','pyjamas.ui.CSS','pyjamas.ui.Panel','pyjamas.Factory','pyjamas.Canvas.JSOStack','pyjamas.ui.SimplePanel','pyjamas.ui.RootPanel','pyjamas.ui.FocusListener','traceback','pyjamas.ui.PopupPanel','I2CPanel','pyjamas.ui.DockPanel','pyjamas.ui.AbsolutePanel','pyjamas.Location','pyjamas.ui.VerticalPanel','pyjamas.Canvas.ImageLoader','pyjamas.Canvas.PathElement','pyjamas.Canvas.LinearGradientImplIE6','pyjamas.ui.TextBoxBase','pyjamas','pyjamas.ui.HorizontalPanel','pyjamas.ui.RowFormatter','pyjamas.ui.CellPanel','getopt','pyjamas.ui.DragHandler','pyjamas.ui.DropHandler','pyjamas.Canvas.ColorStop','pyjamas.ui.Composite','pyjd','pyjamas.ui.FlexCellFormatter','pyjamas.ui.InnerHTML','pyjamas.Canvas.CanvasGradientImplDefault','pyjamas.Canvas','pyjamas.DOM','time','pyjamas.ui.ListBox']);
+    wait_for_loading_modules(app_imported, ['pyjamas.ui','pyjamas.ui.GlassWidget','pyjamas.ui.InnerText','pyjamas.ui.ClickListener','pyjamas.ui.DialogBox','pyjamas.JSONService','pyjamas.Canvas.RadialGradientImplDefault','pyjamas.Canvas.GWTCanvas','struct','pyjamas.ui.CheckBox','base64','pyjamas.ui.Label','pyjamas.ui.FlexTable','pyjamas.ui.ComplexPanel','pyjamas.Canvas.VMLContext','datetime','pyjamas.ui.Image','pyjamas.Window','pyjslib','pyjamas.Canvas.GWTCanvasImplDefault','pyjamas.ui.InputListener','GlibRPCService','pyjamas.Canvas.CanvasGradientImplIE6','pyjamas.Canvas.Color','math','pyjamas.EventController','pyjamas.ui.HTML','pyjamas.ui.UIObject','pyjamas.ui.FlowPanel','pyjamas.ui.Widget','pyjamas.ui.ChangeListener','pyjamas.Canvas.RadialGradientImplIE6','index','pyjamas.ui.TextBox','pyjamas.ui.MouseListener','pyjamas.ui.KeyboardListener','pyjamas.ui.Grid','pyjamas.Canvas.LinearGradientImplDefault','sys','pyjamas.ui.ButtonBase','DisplayHistogramsPanel','ErrorMessage','pyjamas.ui.CellFormatter','pyjamas.ui.HTMLTable','pyjamas.ui.TextArea','pyjamas.ui.Focus','pyjamas.ui.FocusWidget','pyjamas.Canvas.GWTCanvasImplIEConsts','pygwt','pyjamas.Canvas.GWTCanvasConsts','pyjamas.Canvas.GWTCanvasImplIE6','DataRunManager','CalibrateChannelTrimsPanel','pyjamas.Timer','binascii','SCurveRunPanel','json','pyjamas.HTTPRequest','pyjamas.ui.DisclosurePanel','pyjamas.ui.Event','pyjamas.ui.Button','OccupancyCheckPanel','pyjamas.ui.CSS','pyjamas.ui.Panel','pyjamas.Factory','pyjamas.Canvas.JSOStack','pyjamas.ui.SimplePanel','pyjamas.ui.RootPanel','pyjamas.ui.FocusListener','traceback','pyjamas.ui.PopupPanel','I2CPanel','pyjamas.ui.DockPanel','pyjamas.ui.AbsolutePanel','pyjamas.Location','pyjamas.ui.VerticalPanel','pyjamas.Canvas.ImageLoader','pyjamas.Canvas.PathElement','pyjamas.Canvas.LinearGradientImplIE6','pyjamas.ui.TextBoxBase','pyjamas','pyjamas.ui.HorizontalPanel','pyjamas.ui.RowFormatter','pyjamas.ui.CellPanel','getopt','pyjamas.ui.DragHandler','pyjamas.ui.DropHandler','pyjamas.Canvas.ColorStop','pyjamas.ui.Composite','pyjd','pyjamas.ui.FlexCellFormatter','pyjamas.ui.InnerHTML','pyjamas.Canvas.CanvasGradientImplDefault','pyjamas.Canvas','pyjamas.DOM','time','pyjamas.ui.ListBox']);
 }
 
 function pygwtOnLoad(onLoadError, name) {
